@@ -6,7 +6,7 @@
 /*   By: mmuhaise <mmuhaise@student.42beirut.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/26 16:43:42 by mmuhaise          #+#    #+#             */
-/*   Updated: 2024/09/07 14:58:33 by mmuhaise         ###   ########.fr       */
+/*   Updated: 2024/09/07 19:07:58 by mmuhaise         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	prompt_loop(t_my_env *my_env)
 
 	tokens_ll = NULL;
 	exit_status = 0;
-	signal(SIGINT, handle_sigint);
+	signal(SIGINT, ft_sigint_handler_beforecmd);
 	signal(SIGQUIT, handle_sigquit);
 	while (1)
 	{
@@ -36,6 +36,7 @@ void	prompt_loop(t_my_env *my_env)
 			break ;
 		}
 		add_history(input);
+		ft_check_signal(&exit_status);
 		tokenize_input(input, &tokens_ll, &exit_status);
 		ast_root = build_ast(tokens_ll, my_env, &exit_status);
 		execute_ast(ast_root, my_env, &exit_status);

@@ -6,7 +6,7 @@
 /*   By: mmuhaise <mmuhaise@student.42beirut.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/26 18:29:56 by mmuhaise          #+#    #+#             */
-/*   Updated: 2024/09/07 15:02:12 by mmuhaise         ###   ########.fr       */
+/*   Updated: 2024/09/07 19:07:31 by mmuhaise         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,13 +65,30 @@ void	free_tokens(t_elem *tokens_ll)
 // 	free(prompt);
 // }
 
-void ft_sigint_handler_beforecmd(int sig)
+void	ft_sigint_handler_beforecmd(int sig)
 {
- g_signal_exit_status = sig;
- rl_replace_line("", 0);
- ft_putchar_fd('\n', 1);
- rl_on_new_line();
- rl_redisplay();
+	g_signal_exit_status = sig;
+	rl_replace_line("", 0);
+	ft_putchar_fd('\n', 1);
+	rl_on_new_line();
+	rl_redisplay();
+}
+
+void	ft_check_signal(int *exit_status)
+{
+	if (g_signal_exit_status == SIGINT)
+	{
+		*exit_status = 130;
+		g_signal_exit_status = 0;
+		// return (1);
+	}
+	else if (g_signal_exit_status == SIGQUIT)
+	{
+		*exit_status = 131;
+		g_signal_exit_status = 0;
+		// return (1);
+	}
+	// return (0);
 }
 
 void	free_ast(t_ast_node *node)

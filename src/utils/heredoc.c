@@ -6,7 +6,7 @@
 /*   By: mmuhaise <mmuhaise@student.42beirut.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 12:13:10 by mmuhaise          #+#    #+#             */
-/*   Updated: 2024/09/07 14:59:00 by mmuhaise         ###   ########.fr       */
+/*   Updated: 2024/09/07 15:10:10 by mmuhaise         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ void	handle_heredoc_input(int fd, char *limiter,
 		free(temp_node.arr);
 	}
 	free(cleaned_limiter);
-	signal(SIGINT, handle_sigint);
+	signal(SIGINT, ft_sigint_handler_beforecmd);
 }
 
 

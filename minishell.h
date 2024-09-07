@@ -6,7 +6,7 @@
 /*   By: mmuhaise <mmuhaise@student.42beirut.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/26 17:02:22 by mmuhaise          #+#    #+#             */
-/*   Updated: 2024/09/07 14:57:52 by mmuhaise         ###   ########.fr       */
+/*   Updated: 2024/09/07 19:07:39 by mmuhaise         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ typedef struct s_ast_node {
 void		free_tokens(t_elem *tokens_ll);
 char		*execute_pwd(void);
 int			execute_cd(char *arg, t_my_env *my_env, int *exit_status);
-void		handle_sigint(int sig);
+void		ft_sigint_handler_beforecmd(int sig);
 void		handle_sigquit(int sig);
 void		prompt_loop(t_my_env *my_env);
 void		lstadd_back(t_elem **lst, t_elem *new);
@@ -130,6 +130,7 @@ void		expand_env_vars(t_ast_node *node, int i,
 				t_my_env *my_env, int *exit_status);
 void		replace_cleaned_str(t_ll_node **lst, t_ast_node *head, int i);
 void		handle_double_dollar(t_ll_node **lst);
+void		ft_check_signal(int *exit_status);
 
 #endif
 
