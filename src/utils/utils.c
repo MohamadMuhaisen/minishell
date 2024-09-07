@@ -6,7 +6,7 @@
 /*   By: mmuhaise <mmuhaise@student.42beirut.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/26 18:29:56 by mmuhaise          #+#    #+#             */
-/*   Updated: 2024/09/05 06:09:31 by mmuhaise         ###   ########.fr       */
+/*   Updated: 2024/09/07 15:02:12 by mmuhaise         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,16 +53,25 @@ void	free_tokens(t_elem *tokens_ll)
 	}
 }
 
-void	handle_sigint(int sig)
-{
-	char	*prompt;
+// void	handle_sigint(int sig)
+// {
+// 	char	*prompt;
 
-	prompt = ft_strjoin("Minishell", "$ ");
-	rl_redisplay();
-	rl_replace_line("", 0);
-	(void)sig;
-	printf("\n%s", prompt);
-	free(prompt);
+// 	prompt = ft_strjoin("Minishell", "$ ");
+// 	rl_redisplay();
+// 	rl_replace_line("", 0);
+// 	(void)sig;
+// 	printf("\n%s", prompt);
+// 	free(prompt);
+// }
+
+void ft_sigint_handler_beforecmd(int sig)
+{
+ g_signal_exit_status = sig;
+ rl_replace_line("", 0);
+ ft_putchar_fd('\n', 1);
+ rl_on_new_line();
+ rl_redisplay();
 }
 
 void	free_ast(t_ast_node *node)

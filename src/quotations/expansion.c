@@ -6,7 +6,7 @@
 /*   By: mmuhaise <mmuhaise@student.42beirut.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 14:56:33 by mmuhaise          #+#    #+#             */
-/*   Updated: 2024/09/04 14:56:59 by mmuhaise         ###   ########.fr       */
+/*   Updated: 2024/09/07 14:54:16 by mmuhaise         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,12 @@ void	search_and_add_var(t_ll_node **lst, char *str,
 	char	*to_find;
 	char	*tmp;
 
+	if (str[*j + 1] == '$')
+	{
+		handle_double_dollar(lst);
+		*j += 2;
+		return ;
+	}
 	if (check_if_solo_dollar(lst, str, j))
 		return ;
 	(*j)++;

@@ -6,7 +6,7 @@
 /*   By: mmuhaise <mmuhaise@student.42beirut.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 12:13:10 by mmuhaise          #+#    #+#             */
-/*   Updated: 2024/09/06 09:34:22 by mmuhaise         ###   ########.fr       */
+/*   Updated: 2024/09/07 14:59:00 by mmuhaise         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,14 +75,12 @@ char	*strip_quotes(char *str)
 
 void	handle_sigint_heredoc(int sig)
 {
-	(void)sig;
-	// g_interrupted = 1;  // Set the interrupt flag
 	char	*prompt;
 
+	(void)sig;
 	prompt = ft_strjoin("Minishell", "$ ");
 	rl_redisplay();
 	rl_replace_line("", 0);
-	// (void)sig;
 	printf("\n%s", prompt);
 	free(prompt);
 }
@@ -96,18 +94,10 @@ void	handle_heredoc_input(int fd, char *limiter,
 
 	signal(SIGINT, handle_sigint_heredoc);
 	cleaned_limiter = strip_quotes(limiter);
-	// g_interrupted = 0;
-
 	while (1)
 	{
-		// if (g_interrupted)
-		// {
-		//     // free(cleaned_limiter);
-		//     break ;
-		// }
-
 		input = readline("> ");
-		if (!input)  // Detect if input was interrupted (e.g., by EOF)
+		if (!input)
 		{
 			free(cleaned_limiter);
 			return ;

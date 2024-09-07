@@ -6,7 +6,7 @@
 /*   By: mmuhaise <mmuhaise@student.42beirut.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 14:55:30 by mmuhaise          #+#    #+#             */
-/*   Updated: 2024/09/05 22:32:03 by mmuhaise         ###   ########.fr       */
+/*   Updated: 2024/09/07 14:55:15 by mmuhaise         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,8 @@ void	free_char_ll(t_ll_node **start)
 	free(*start);
 }
 
-void	expand_env_vars(t_ast_node *node, int i, t_my_env *my_env, int *exit_status)
+void	expand_env_vars(t_ast_node *node, int i,
+			t_my_env *my_env, int *exit_status)
 {
 	t_ll_node	*start;
 	int			j;
@@ -58,4 +59,42 @@ void	expand_env_vars(t_ast_node *node, int i, t_my_env *my_env, int *exit_status
 	}
 	replace_cleaned_str(&start, node, i);
 	free_char_ll(&start);
+}
+
+void	add_to_str_str(char *str, t_ll_node **lst)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		add_to_str(str[i], lst);
+		i++;
+	}
+}
+
+void	handle_double_dollar(t_ll_node **lst)
+{
+	int		fd;
+	char	buffer[12];
+	char	*pid_str;
+	int		i;
+
+	fd = open("/proc/self/stat", O_RDONLY);
+	if (fd < 0)
+		return ;
+	if (read(fd, buffer, sizeof(buffer) - 1) <= 0)
+	{
+		close(fd);
+		return ;
+	}
+	buffer[11] = '\0';
+	i = 0;
+	while (buffer[i] && buffer[i] != ' ')
+		i++;
+	buffer[i] = '\0';
+	pid_str = ft_strdup(buffer);
+	add_to_str_str(pid_str, lst);
+	free(pid_str);
+	close(fd);
 }

@@ -6,7 +6,7 @@
 /*   By: mmuhaise <mmuhaise@student.42beirut.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/26 17:02:22 by mmuhaise          #+#    #+#             */
-/*   Updated: 2024/09/06 09:35:46 by mmuhaise         ###   ########.fr       */
+/*   Updated: 2024/09/07 14:57:52 by mmuhaise         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 # include <sys/stat.h>
 # include <errno.h>
 
-// int global_var = 0;
+extern int g_signal_exit_status;
 
 typedef enum e_type{
 	PIPE,
@@ -129,6 +129,7 @@ void		clean_quotations(t_ast_node *head, int i,
 void		expand_env_vars(t_ast_node *node, int i,
 				t_my_env *my_env, int *exit_status);
 void		replace_cleaned_str(t_ll_node **lst, t_ast_node *head, int i);
+void		handle_double_dollar(t_ll_node **lst);
 
 #endif
 
@@ -136,6 +137,7 @@ void		replace_cleaned_str(t_ll_node **lst, t_ast_node *head, int i);
 // CTRL C in heredoc
 // CTRL C in multiple minishells
 // change PWD in env
+// cat CTRL C exit code and general CTRL C exit code
 
 // CTRL + C with old value
 

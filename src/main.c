@@ -6,11 +6,13 @@
 /*   By: mmuhaise <mmuhaise@student.42beirut.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/26 16:43:42 by mmuhaise          #+#    #+#             */
-/*   Updated: 2024/09/06 01:30:33 by mmuhaise         ###   ########.fr       */
+/*   Updated: 2024/09/07 14:58:33 by mmuhaise         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+int	g_signal_exit_status = 0;
 
 void	prompt_loop(t_my_env *my_env)
 {

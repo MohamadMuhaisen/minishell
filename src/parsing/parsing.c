@@ -6,7 +6,7 @@
 /*   By: mmuhaise <mmuhaise@student.42beirut.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 18:38:22 by mmuhaise          #+#    #+#             */
-/*   Updated: 2024/09/06 01:24:36 by mmuhaise         ###   ########.fr       */
+/*   Updated: 2024/09/07 14:59:26 by mmuhaise         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,11 +77,7 @@ t_ast_node	*fill_command_node(t_ast_node *node, t_elem **tokens_ll,
 	{
 		if (ft_strncmp(cur->token, "<", 1) == 0
 			|| ft_strncmp(cur->token, ">", 1) == 0)
-		{
 			handle_redirection(node, &cur, my_env, exit_status);
-			// if (g_interrupted)
-			// 	return (NULL);
-		}
 		else
 		{
 			node->arr[i++] = ft_strdup(cur->token);
