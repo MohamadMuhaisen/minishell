@@ -6,7 +6,7 @@
 /*   By: mmuhaise <mmuhaise@student.42beirut.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 10:33:33 by mmuhaise          #+#    #+#             */
-/*   Updated: 2024/09/05 20:50:02 by mmuhaise         ###   ########.fr       */
+/*   Updated: 2024/09/08 14:07:15 by mmuhaise         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	free_paths(char **paths)
 
 void	handle_sigquit(int sig)
 {
-	(void)sig;
+	g_signal_exit_status = sig;
 }
 
 void	free_ast_helper(t_ast_node *node)

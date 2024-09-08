@@ -6,7 +6,7 @@
 /*   By: mmuhaise <mmuhaise@student.42beirut.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/26 18:29:56 by mmuhaise          #+#    #+#             */
-/*   Updated: 2024/09/07 19:07:31 by mmuhaise         ###   ########.fr       */
+/*   Updated: 2024/09/07 19:24:38 by mmuhaise         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,15 +80,12 @@ void	ft_check_signal(int *exit_status)
 	{
 		*exit_status = 130;
 		g_signal_exit_status = 0;
-		// return (1);
 	}
 	else if (g_signal_exit_status == SIGQUIT)
 	{
 		*exit_status = 131;
 		g_signal_exit_status = 0;
-		// return (1);
 	}
-	// return (0);
 }
 
 void	free_ast(t_ast_node *node)

@@ -6,7 +6,7 @@
 /*   By: mmuhaise <mmuhaise@student.42beirut.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 12:13:10 by mmuhaise          #+#    #+#             */
-/*   Updated: 2024/09/07 15:10:10 by mmuhaise         ###   ########.fr       */
+/*   Updated: 2024/09/08 15:50:38 by mmuhaise         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,39 +73,37 @@ char	*strip_quotes(char *str)
 	return (cleaned);
 }
 
-void	handle_sigint_heredoc(int sig)
+void	ft_sigint_handler_incmd(int sig)
 {
-	char	*prompt;
-
-	(void)sig;
-	prompt = ft_strjoin("Minishell", "$ ");
-	rl_redisplay();
-	rl_replace_line("", 0);
-	printf("\n%s", prompt);
-	free(prompt);
+	g_signal_exit_status = sig;
+	rl_replace_line("", 1);
+	ft_putchar_fd('\n', 1);
+	rl_on_new_line();
+	rl_done = 1;
 }
 
-void	handle_heredoc_input(int fd, char *limiter,
-			t_my_env *myenv, int *exit_status)
-{
-	char		*input;
-	t_ast_node	temp_node;
-	char		*cleaned_limiter;
 
-	signal(SIGINT, handle_sigint_heredoc);
+void handle_heredoc_input(int fd, char *limiter, t_my_env *myenv, int *exit_status)
+{
+	char *input;
+	t_ast_node temp_node;
+	char *cleaned_limiter;
+
+	signal(SIGINT, ft_sigint_handler_incmd);  // Use heredoc-specific handler
 	cleaned_limiter = strip_quotes(limiter);
+
 	while (1)
 	{
 		input = readline("> ");
 		if (!input)
 		{
 			free(cleaned_limiter);
-			return ;
+			return;
 		}
 		if (ft_strcmp(input, cleaned_limiter) == 0)
 		{
 			free(input);
-			break ;
+			break;
 		}
 		temp_node.arr = malloc(sizeof(char *) * 2);
 		temp_node.arr[0] = input;
@@ -116,11 +114,10 @@ void	handle_heredoc_input(int fd, char *limiter,
 		free(temp_node.arr[0]);
 		free(temp_node.arr);
 	}
+
 	free(cleaned_limiter);
-	signal(SIGINT, ft_sigint_handler_beforecmd);
+	signal(SIGINT, ft_sigint_handler_beforecmd);  // Restore previous handler
 }
-
-
 
 void	capture_heredoc(char *limiter, t_ast_node *node,
 			t_my_env *myenv, int *exit_status)
