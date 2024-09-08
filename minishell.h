@@ -6,7 +6,7 @@
 /*   By: mmuhaise <mmuhaise@student.42beirut.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/26 17:02:22 by mmuhaise          #+#    #+#             */
-/*   Updated: 2024/09/07 19:07:39 by mmuhaise         ###   ########.fr       */
+/*   Updated: 2024/09/08 21:56:48 by mmuhaise         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ typedef struct s_ast_node {
 	t_type				type;
 	char				*heredoc;
 	int					append;
+	int					err;
 	struct s_ast_node	*left;
 	struct s_ast_node	*right;
 }	t_ast_node;
@@ -129,6 +130,7 @@ void		expand_env_vars(t_ast_node *node, int i,
 void		replace_cleaned_str(t_ll_node **lst, t_ast_node *head, int i);
 void		handle_double_dollar(t_ll_node **lst);
 void		ft_check_signal(t_my_env *my_env);
+char		*strip_quotes(char *str);
 
 #endif
 

@@ -6,7 +6,7 @@
 /*   By: mmuhaise <mmuhaise@student.42beirut.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 17:13:29 by mmuhaise          #+#    #+#             */
-/*   Updated: 2024/09/05 11:28:52 by mmuhaise         ###   ########.fr       */
+/*   Updated: 2024/09/08 21:38:02 by mmuhaise         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,8 @@ void	handle_redirections_exec(t_ast_node *node)
 	int	fd_in;
 	int	fd_out;
 
+	if (node->err)
+		exit(node->err);
 	if (node->in)
 	{
 		fd_in = open_input_file(node->in);
