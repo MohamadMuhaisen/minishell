@@ -6,7 +6,7 @@
 /*   By: mmuhaise <mmuhaise@student.42beirut.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 18:50:35 by mmuhaise          #+#    #+#             */
-/*   Updated: 2024/08/26 15:53:19 by mmuhaise         ###   ########.fr       */
+/*   Updated: 2024/09/08 19:04:52 by mmuhaise         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,17 +67,5 @@ void	print_ast(t_ast_node *node, int level)
 		print_indent(level + 1);
 		printf("Right Child:\n");
 		print_ast(node->right, level + 2);
-	}
-}
-
-void	print_env(t_my_env *my_env)
-{
-	int	i;
-
-	i = 0;
-	while (my_env->env[i])
-	{
-		printf("%s\n", my_env->env[i]);
-		i++;
 	}
 }

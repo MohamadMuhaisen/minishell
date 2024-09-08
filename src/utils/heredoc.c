@@ -6,7 +6,7 @@
 /*   By: mmuhaise <mmuhaise@student.42beirut.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 12:13:10 by mmuhaise          #+#    #+#             */
-/*   Updated: 2024/09/08 15:50:38 by mmuhaise         ###   ########.fr       */
+/*   Updated: 2024/09/08 19:03:28 by mmuhaise         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,45 +82,41 @@ void	ft_sigint_handler_incmd(int sig)
 	rl_done = 1;
 }
 
-
-void handle_heredoc_input(int fd, char *limiter, t_my_env *myenv, int *exit_status)
+void	handle_heredoc_input(int fd, char *limiter, t_my_env *myenv)
 {
-	char *input;
-	t_ast_node temp_node;
-	char *cleaned_limiter;
+	char		*input;
+	t_ast_node	temp_node;
+	char		*cleaned_limiter;
 
-	signal(SIGINT, ft_sigint_handler_incmd);  // Use heredoc-specific handler
+	signal(SIGINT, ft_sigint_handler_incmd);
 	cleaned_limiter = strip_quotes(limiter);
-
 	while (1)
 	{
 		input = readline("> ");
 		if (!input)
 		{
 			free(cleaned_limiter);
-			return;
+			return ;
 		}
 		if (ft_strcmp(input, cleaned_limiter) == 0)
 		{
 			free(input);
-			break;
+			break ;
 		}
 		temp_node.arr = malloc(sizeof(char *) * 2);
 		temp_node.arr[0] = input;
 		temp_node.arr[1] = NULL;
-		expand_env_vars(&temp_node, 0, myenv, exit_status);
+		expand_env_vars(&temp_node, 0, myenv);
 		write(fd, temp_node.arr[0], ft_strlen(temp_node.arr[0]));
 		write(fd, "\n", 1);
 		free(temp_node.arr[0]);
 		free(temp_node.arr);
 	}
-
 	free(cleaned_limiter);
-	signal(SIGINT, ft_sigint_handler_beforecmd);  // Restore previous handler
+	signal(SIGINT, ft_sigint_handler_beforecmd);
 }
 
-void	capture_heredoc(char *limiter, t_ast_node *node,
-			t_my_env *myenv, int *exit_status)
+void	capture_heredoc(char *limiter, t_ast_node *node, t_my_env *myenv)
 {
 	int		fd;
 	char	*filename;
@@ -131,7 +127,78 @@ void	capture_heredoc(char *limiter, t_ast_node *node,
 		perror("open");
 		return ;
 	}
-	handle_heredoc_input(fd, limiter, myenv, exit_status);
+	handle_heredoc_input(fd, limiter, myenv);
 	close(fd);
 	node->heredoc = filename;
 }
+
+/////////////////////////////////////////////
+
+// void ft_handle_heredoc_child(t_data *data, int fd, char *limiter)
+// {
+// 	char *line;
+// 	char *new_line;
+
+// 	ft_reset_signal();
+// 	line = readline("> ");
+// 	while (line)
+// 	{
+// 		if (!line || ft_strcmp(line, limiter) == 0)
+// 		{
+// 			free(line);
+// 			break;
+// 		}
+// 		if (ft_is_dollar(line, '$') && !data->quote_heredoc)
+// 		{
+// 			new_line = ft_change_variables(data, line, 0, 0);
+// 			free(line);
+// 			line = new_line;
+// 		}
+// 		write(fd, line, ft_strlen(line));
+// 		write(fd, "\n", 1);
+// 		free(line);
+// 		line = readline("> ");
+// 	}
+// 	close(fd);
+// 	exit(0);
+// }
+
+// int ft_handle_heredoc_parent(t_data *data, pid_t pid, int fd, char *limiter)
+// {
+// 	int status;
+
+// 	waitpid(pid, &status, 0);
+// 	if (data->stop_heredoc)
+// 	{
+// 		close(fd);
+// 		unlink(limiter);
+// 		return (1);
+// 	}
+// 	return (0);
+// }
+
+// void ft_here_doc(t_data *data, char *limiter)
+// {
+// 	int fd;
+// 	pid_t pid;
+
+// 	fd = open(limiter, O_CREAT | O_RDWR | O_TRUNC, 0644);
+// 	if (fd == -1)
+// 		return;
+// 	pid = fork();
+// 	if (pid == 0)
+// 	{
+// 		ft_handle_heredoc_child(data, fd, limiter);
+// 	}
+// 	else if (pid > 0)
+// 	{
+// 		if (ft_handle_heredoc_parent(data, pid, fd, limiter))
+// 			return;
+// 	}
+// 	else
+// 	{
+// 		perror("fork");
+// 		return;
+// 	}
+// 	return;
+// }

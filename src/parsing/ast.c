@@ -13,7 +13,7 @@
 #include "../../minishell.h"
 
 t_ast_node	*initialize_ast_root(t_elem *tokens_ll,
-				t_my_env *my_env, int *exit_status)
+				t_my_env *my_env)
 {
 	t_ast_node	*root;
 
@@ -24,31 +24,31 @@ t_ast_node	*initialize_ast_root(t_elem *tokens_ll,
 		|| (ft_strncmp(tokens_ll->token, "<", 1) == 0 && !tokens_ll->next))
 	{
 		ft_putendl_fd("Minishell: syntax error", 2);
-		*exit_status = 2;
+		my_env->exit_status = 2;
 		return (NULL);
 	}
-	root = parse_simple_command(&tokens_ll, my_env, exit_status);
+	root = parse_simple_command(&tokens_ll, my_env);
 	if (!root)
 		return (NULL);
 	return (root);
 }
 
 t_elem	*process_pipe_syntax(t_elem *tokens_ll,
-		t_ast_node *root, int *exit_status)
+		t_ast_node *root, t_my_env *my_env)
 {
 	tokens_ll = tokens_ll->next;
 	if (!tokens_ll || ft_strncmp(tokens_ll->token, "|", 1) == 0)
 	{
 		ft_putendl_fd("Minishell: syntax error", 2);
 		free_ast(root);
-		*exit_status = 2;
+		my_env->exit_status = 2;
 		return (NULL);
 	}
 	return (tokens_ll);
 }
 
 t_ast_node	*create_pipe_node(t_elem *tokens_ll,
-		t_ast_node *root, t_my_env *my_env, int *exit_status)
+		t_ast_node *root, t_my_env *my_env)
 {
 	t_ast_node	*cur_node;
 
@@ -59,7 +59,7 @@ t_ast_node	*create_pipe_node(t_elem *tokens_ll,
 		return (NULL);
 	}
 	cur_node->left = root;
-	cur_node->right = build_ast(tokens_ll, my_env, exit_status);
+	cur_node->right = build_ast(tokens_ll, my_env);
 	if (!cur_node->right)
 	{
 		free_ast(cur_node);
@@ -69,7 +69,7 @@ t_ast_node	*create_pipe_node(t_elem *tokens_ll,
 }
 
 t_ast_node	*build_pipe_ast(t_elem *tokens_ll,
-		t_ast_node *root, t_my_env *my_env, int *exit_status)
+		t_ast_node *root, t_my_env *my_env)
 {
 	t_ast_node	*cur_node;
 
@@ -78,10 +78,10 @@ t_ast_node	*build_pipe_ast(t_elem *tokens_ll,
 		if (ft_strncmp(tokens_ll->token, "|", 1) == 0
 			&& ft_strlen(tokens_ll->token) == 1)
 		{
-			tokens_ll = process_pipe_syntax(tokens_ll, root, exit_status);
+			tokens_ll = process_pipe_syntax(tokens_ll, root, my_env);
 			if (!tokens_ll)
 				return (NULL);
-			cur_node = create_pipe_node(tokens_ll, root, my_env, exit_status);
+			cur_node = create_pipe_node(tokens_ll, root, my_env);
 			return (cur_node);
 		}
 		tokens_ll = tokens_ll->next;
@@ -89,12 +89,12 @@ t_ast_node	*build_pipe_ast(t_elem *tokens_ll,
 	return (root);
 }
 
-t_ast_node	*build_ast(t_elem *tokens_ll, t_my_env *my_env, int *exit_status)
+t_ast_node	*build_ast(t_elem *tokens_ll, t_my_env *my_env)
 {
 	t_ast_node	*root;
 
-	root = initialize_ast_root(tokens_ll, my_env, exit_status);
+	root = initialize_ast_root(tokens_ll, my_env);
 	if (!root)
 		return (NULL);
-	return (build_pipe_ast(tokens_ll, root, my_env, exit_status));
+	return (build_pipe_ast(tokens_ll, root, my_env));
 }

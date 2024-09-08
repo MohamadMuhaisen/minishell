@@ -52,20 +52,20 @@ int	is_valid_identifier_export(const char *str)
 	return (1);
 }
 
-int	execute_export(t_ast_node *node, t_my_env *my_env, int *exit_status)
+int	execute_export(t_ast_node *node, t_my_env *my_env)
 {
 	int		i;
 	char	*key;
 	char	*value;
 
 	if (!node->arr[1])
-		return (handle_no_args_export(my_env, exit_status));
+		return (handle_no_args_export(my_env));
 	i = 1;
 	while (node->arr[i])
 	{
 		if (parse_key_value(node->arr[i], &key, &value))
 		{
-			*exit_status = 1;
+			my_env->exit_status = 1;
 			return (1);
 		}
 		if (!update_existing_env(key, value, my_env))
@@ -75,6 +75,6 @@ int	execute_export(t_ast_node *node, t_my_env *my_env, int *exit_status)
 			free(value);
 		i++;
 	}
-	*exit_status = 0;
+	my_env->exit_status = 0;
 	return (1);
 }

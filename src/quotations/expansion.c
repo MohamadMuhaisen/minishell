@@ -12,12 +12,12 @@
 
 #include "../../minishell.h"
 
-void	check_for_i(char *tofind, char **var_and_val, int *exit_status)
+void	check_for_i(char *tofind, char **var_and_val, t_my_env *my_env)
 {
 	if (*tofind == '?')
 	{
 		free(*var_and_val);
-		*var_and_val = ft_itoa(*exit_status);
+		*var_and_val = ft_itoa(my_env->exit_status);
 	}
 }
 
@@ -28,7 +28,7 @@ void	change_i_helper(int *i, char *tofind)
 }
 
 void	get_var(t_my_env *myenv, char *tofind,
-			t_ll_node **lst, int *exit_status)
+			t_ll_node **lst)
 {
 	int		i;
 	char	*var_and_val;
@@ -40,7 +40,7 @@ void	get_var(t_my_env *myenv, char *tofind,
 		if (!strncmp(myenv->env[i], tofind, ft_strlen(tofind)))
 			var_and_val = ft_strdup(myenv->env[i]);
 	}
-	check_for_i(tofind, &var_and_val, exit_status);
+	check_for_i(tofind, &var_and_val, myenv);
 	if (!var_and_val)
 		return ;
 	i = 0;
@@ -69,7 +69,7 @@ int	check_if_solo_dollar(t_ll_node **lst, char *str, int *j)
 }
 
 void	search_and_add_var(t_ll_node **lst, char *str,
-			int *j, t_my_env *myenv, int *exit_status)
+			int *j, t_my_env *myenv)
 {
 	int		i;
 	char	*to_find;
@@ -98,7 +98,7 @@ void	search_and_add_var(t_ll_node **lst, char *str,
 	tmp = to_find;
 	to_find = ft_strjoin(to_find, "=");
 	free(tmp);
-	get_var(myenv, to_find, lst, exit_status);
+	get_var(myenv, to_find, lst);
 	(*j) += i;
 	free(to_find);
 }

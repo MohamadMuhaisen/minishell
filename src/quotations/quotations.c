@@ -13,13 +13,13 @@
 #include "../../minishell.h"
 
 void	resolve_quotes(t_ll_node **lst, char *str,
-		int *j, t_my_env *my_env, int *exit_status)
+		int *j, t_my_env *my_env)
 {
 	(*j)++;
 	while (str[*j] && str[*j] != '"')
 	{
 		if (str[*j] == '$')
-			search_and_add_var(lst, str, j, my_env, exit_status);
+			search_and_add_var(lst, str, j, my_env);
 		else
 		{
 			add_to_str(str[*j], lst);
@@ -70,7 +70,7 @@ void	replace_cleaned_str(t_ll_node **lst, t_ast_node *head, int i)
 }
 
 void	clean_quotations(t_ast_node *head, int i,
-			t_my_env *my_env, int *exit_status)
+			t_my_env *my_env)
 {
 	t_ll_node	*start;
 	int			j;
@@ -83,14 +83,14 @@ void	clean_quotations(t_ast_node *head, int i,
 	while (head->arr[i][j])
 	{
 		if (head->arr[i][j] == '"')
-			resolve_quotes(&start, head->arr[i], &j, my_env, exit_status);
+			resolve_quotes(&start, head->arr[i], &j, my_env);
 		else if (head->arr[i][j] == '\'')
 			resolve_literals(&start, head->arr[i], &j);
 		else if (head->arr[i][j] == '$' && ((head->arr[i][j + 1] == '"')
 				|| (head->arr[i][j + 1] == '\'')))
 			j++;
 		else if (head->arr[i][j] == '$')
-			search_and_add_var(&start, head->arr[i], &j, my_env, exit_status);
+			search_and_add_var(&start, head->arr[i], &j, my_env);
 		else
 			add_to_str(head->arr[i][j++], &start);
 	}
@@ -98,20 +98,20 @@ void	clean_quotations(t_ast_node *head, int i,
 }
 
 void	traverse_and_clean_tree(t_ast_node *head,
-			t_my_env *my_env, int *exit_status)
+			t_my_env *my_env)
 {
 	int	i;
 
 	if (head->left)
-		traverse_and_clean_tree(head->left, my_env, exit_status);
+		traverse_and_clean_tree(head->left, my_env);
 	if (head->right)
-		traverse_and_clean_tree(head->right, my_env, exit_status);
+		traverse_and_clean_tree(head->right, my_env);
 	i = 0;
 	if (head && head->arr)
 	{
 		while (head->arr[i])
 		{
-			clean_quotations(head, i, my_env, exit_status);
+			clean_quotations(head, i, my_env);
 			i++;
 		}
 	}

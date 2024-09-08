@@ -65,10 +65,10 @@ void	print_sorted_env(t_my_env *my_env)
 	free_env(sorted_env);
 }
 
-int	handle_no_args_export(t_my_env *my_env, int *exit_status)
+int	handle_no_args_export(t_my_env *my_env)
 {
 	print_sorted_env(my_env);
-	*exit_status = 0;
+	my_env->exit_status = 0;
 	return (1);
 }
 

@@ -20,10 +20,9 @@ void	prompt_loop(t_my_env *my_env)
 	char		*prompt;
 	t_elem		*tokens_ll;
 	t_ast_node	*ast_root;
-	int			exit_status;
 
 	tokens_ll = NULL;
-	exit_status = 0;
+	my_env->exit_status = 0;
 	signal(SIGINT, ft_sigint_handler_beforecmd);
 	signal(SIGQUIT, handle_sigquit);
 	while (1)
@@ -36,10 +35,10 @@ void	prompt_loop(t_my_env *my_env)
 			break ;
 		}
 		add_history(input);
-		ft_check_signal(&exit_status);
-		tokenize_input(input, &tokens_ll, &exit_status);
-		ast_root = build_ast(tokens_ll, my_env, &exit_status);
-		execute_ast(ast_root, my_env, &exit_status);
+		ft_check_signal(my_env);
+		tokenize_input(input, &tokens_ll, my_env);
+		ast_root = build_ast(tokens_ll, my_env);
+		execute_ast(ast_root, my_env);
 		cleanup_heredoc_file(ast_root);
 		free_tokens(tokens_ll);
 		tokens_ll = NULL;
@@ -67,6 +66,8 @@ int	main(int ac, char **av, char **env)
 		shlvl = ft_itoa(shlvl_value);
 		update_existing_env("SHLVL", shlvl, my_env);
 	}
+	else
+		add_new_env_var("SHLVL", "3", my_env);
 	free(shlvl);
 	prompt_loop(my_env);
 	free_env(my_env->env);

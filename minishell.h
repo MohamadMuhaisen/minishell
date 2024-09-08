@@ -43,6 +43,7 @@ typedef struct s_ll_node {
 
 typedef struct s_my_env {
 	char	**env;
+	int		exit_status;
 }	t_my_env;
 
 typedef struct s_ast_node {
@@ -57,67 +58,64 @@ typedef struct s_ast_node {
 }	t_ast_node;
 
 void		free_tokens(t_elem *tokens_ll);
-char		*execute_pwd(void);
-int			execute_cd(char *arg, t_my_env *my_env, int *exit_status);
+int			execute_cd(char *arg, t_my_env *my_env);
 void		ft_sigint_handler_beforecmd(int sig);
 void		handle_sigquit(int sig);
 void		prompt_loop(t_my_env *my_env);
 void		lstadd_back(t_elem **lst, t_elem *new);
 void		free_ast(t_ast_node *node);
-t_ast_node	*build_ast(t_elem *tokens_ll, t_my_env *my_env, int *exit_status);
+t_ast_node	*build_ast(t_elem *tokens_ll, t_my_env *my_env);
 void		print_ast(t_ast_node *node, int level);
 t_ast_node	*new_ast_node(t_type type);
-void		execute_ast(t_ast_node *node, t_my_env *my_env, int *exit_status);
+void		execute_ast(t_ast_node *node, t_my_env *my_env);
 void		free_paths(char **paths);
 void		print_env(t_my_env *my_env);
 char		*find_path(char *command, char **env);
 void		create_pipe(int pipefd[2]);
 pid_t		fork_process(void);
 void		execute_left_command(t_ast_node *node, t_my_env *my_env,
-				int *exit_status, int pipefd[2]);
+				int pipefd[2]);
 void		execute_right_command(t_ast_node *node, t_my_env *my_env,
-				int *exit_status, int pipefd[2]);
+				int pipefd[2]);
 void		close_pipe_and_wait(int pipefd[2], pid_t left_pid,
-				pid_t right_pid, int *exit_status);
+				pid_t right_pid, t_my_env *my_env);
 void		execute_simple_command(t_ast_node *node,
-				t_my_env *my_env, int *exit_status);
+				t_my_env *my_env);
 void		handle_redirection(t_ast_node *node, t_elem **cur,
-				t_my_env *my_env, int *exit_status);
+				t_my_env *my_env);
 int			token_len(char *input);
 void		handle_quotes(char *input, t_elem **tokens_ll, int *i);
 char		*ft_get_token(const char *str, int len);
 char		*get_env_var(char *str, t_my_env *my_env);
-int			handle_builtins(t_ast_node *node, t_my_env *my_env,
-				int *exit_status);
+int			handle_builtins(t_ast_node *node, t_my_env *my_env);
 int			execute_echo(t_ast_node *node, t_my_env *my_env, int *exit_status);
-int			execute_export(t_ast_node *node, t_my_env *my_env,
-				int *exit_status);
+int			execute_export(t_ast_node *node, t_my_env *my_env);
 int			count_env_vars(char **env);
 char		**copy_env(char **env);
 void		free_env(char **env_cpy);
-int			handle_no_args_export(t_my_env *my_env, int *exit_status);
+int			handle_no_args_export(t_my_env *my_env);
 int			parse_key_value(char *arg, char **key, char **value);
 int			update_existing_env(char *key, char *value, t_my_env *my_env);
-int			execute_unset(t_ast_node *node, t_my_env *my_env, int *exit_status);
-int			execute_exit(t_ast_node *node, t_my_env *my_env, int *exit_status);
+int			execute_unset(t_ast_node *node, t_my_env *my_env);
+int			execute_exit(t_ast_node *node, t_my_env *my_env);
 int			is_valid_identifier_export(const char *str);
 t_elem		*create_elem(char *token);
 void		handle_heredoc_token(char *input, t_elem **tokens_ll, int *i);
 void		capture_heredoc(char *limiter, t_ast_node *node,
-				t_my_env *myenv, int *exit_status);
+				t_my_env *myenv);
 void		cleanup_heredoc_file(t_ast_node *node);
 void		traverse_and_clean_tree(t_ast_node *head,
-				t_my_env *my_env, int *exit_status);
+				t_my_env *my_env);
 void		search_and_add_var(t_ll_node **lst, char *str,
-				int *j, t_my_env *myenv, int *exit_status);
+				int *j, t_my_env *myenv);
 void		add_new_env_var(char *key, char *value, t_my_env *my_env);
 int			open_input_file(const char *filepath);
 void		apply_input_redirection(int fd_in);
 void		handle_input_redirection(t_ast_node *node, char *filename);
 void		handle_output_redirection(t_ast_node *node, char *filename);
 t_ast_node	*parse_simple_command(t_elem **tokens_ll,
-				t_my_env *my_env, int *exit_status);
-void		tokenize_input(char *input, t_elem **tokens_ll, int *exit_status);
+				t_my_env *my_env);
+void		tokenize_input(char *input, t_elem **tokens_ll, t_my_env *my_env);
 void		add_to_str(char c, t_ll_node **lst);
 void		free_char_ll(t_ll_node **start);
 int			skip_spaces(char *input, int i);
@@ -125,12 +123,12 @@ void		create_token_node(t_elem **tokens_ll,
 				char *input, int *i, int t_len);
 void		free_ast_helper(t_ast_node *node);
 void		clean_quotations(t_ast_node *head, int i,
-				t_my_env *my_env, int *exit_status);
+				t_my_env *my_env);
 void		expand_env_vars(t_ast_node *node, int i,
-				t_my_env *my_env, int *exit_status);
+				t_my_env *my_env);
 void		replace_cleaned_str(t_ll_node **lst, t_ast_node *head, int i);
 void		handle_double_dollar(t_ll_node **lst);
-void		ft_check_signal(int *exit_status);
+void		ft_check_signal(t_my_env *my_env);
 
 #endif
 

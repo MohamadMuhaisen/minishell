@@ -66,7 +66,7 @@ t_ast_node	*initialize_command_node(t_elem **tokens_ll, int *arg_count)
 
 // cur = cur ? cur->next : NULL;
 t_ast_node	*fill_command_node(t_ast_node *node, t_elem **tokens_ll,
-				t_my_env *my_env, int *exit_status)
+				t_my_env *my_env)
 {
 	t_elem	*cur;
 	int		i;
@@ -77,7 +77,7 @@ t_ast_node	*fill_command_node(t_ast_node *node, t_elem **tokens_ll,
 	{
 		if (ft_strncmp(cur->token, "<", 1) == 0
 			|| ft_strncmp(cur->token, ">", 1) == 0)
-			handle_redirection(node, &cur, my_env, exit_status);
+			handle_redirection(node, &cur, my_env);
 		else
 		{
 			node->arr[i++] = ft_strdup(cur->token);
@@ -95,7 +95,7 @@ t_ast_node	*fill_command_node(t_ast_node *node, t_elem **tokens_ll,
 }
 
 t_ast_node	*parse_simple_command(t_elem **tokens_ll,
-				t_my_env *my_env, int *exit_status)
+				t_my_env *my_env)
 {
 	t_ast_node	*node;
 	int			arg_count;
@@ -103,5 +103,5 @@ t_ast_node	*parse_simple_command(t_elem **tokens_ll,
 	node = initialize_command_node(tokens_ll, &arg_count);
 	if (!node)
 		return (NULL);
-	return (fill_command_node(node, tokens_ll, my_env, exit_status));
+	return (fill_command_node(node, tokens_ll, my_env));
 }

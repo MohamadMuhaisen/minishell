@@ -30,26 +30,26 @@ int	is_numeric_argument(char *arg)
 	return (1);
 }
 
-void	exit_with_error(char *arg, int *exit_status)
+void	exit_with_error(char *arg, t_my_env *my_env)
 {
 	ft_putstr_fd("exit: ", 2);
 	ft_putstr_fd(arg, 2);
 	ft_putendl_fd(": numeric argument required", 2);
-	*exit_status = 2;
-	exit(*exit_status);
+	my_env->exit_status = 2;
+	exit(my_env->exit_status);
 }
 
-int	execute_exit(t_ast_node *node, t_my_env *my_env, int *exit_status)
+int	execute_exit(t_ast_node *node, t_my_env *my_env)
 {
 	int	exit_code;
 
 	(void)my_env;
 	if (node->arr[1] && !is_numeric_argument(node->arr[1]))
-		exit_with_error(node->arr[1], exit_status);
+		exit_with_error(node->arr[1], my_env);
 	if (node->arr[1] && node->arr[2])
 	{
 		ft_putendl_fd("exit: too many arguments", 2);
-		*exit_status = 1;
+		my_env->exit_status = 1;
 		return (1);
 	}
 	else
@@ -57,8 +57,8 @@ int	execute_exit(t_ast_node *node, t_my_env *my_env, int *exit_status)
 		if (node->arr[1])
 			exit_code = ft_atoi(node->arr[1]);
 		else
-			exit_code = *exit_status;
-		*exit_status = exit_code;
+			exit_code = my_env->exit_status;
+		my_env->exit_status = exit_code;
 		exit(exit_code);
 	}
 	return (1);

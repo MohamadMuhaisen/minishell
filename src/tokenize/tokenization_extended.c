@@ -22,7 +22,7 @@ void	handle_non_quote_token(char *input, t_elem **tokens_ll, int *i)
 }
 
 int	handle_special_tokens(char *input, int i,
-		t_elem **tokens_ll, int *exit_status)
+		t_elem **tokens_ll, t_my_env *my_env)
 {
 	if (input[i] == '>' && input[i + 1] == '>')
 	{
@@ -35,7 +35,7 @@ int	handle_special_tokens(char *input, int i,
 		{
 			ft_putendl_fd("Minishell: syntax", 2);
 			ft_putendl_fd(" error near unexpected token `||`\n", 2);
-			*exit_status = 2;
+			my_env->exit_status = 2;
 			return (-1);
 		}
 		lstadd_back(tokens_ll, create_elem(ft_strdup("|")));
@@ -49,7 +49,7 @@ int	handle_special_tokens(char *input, int i,
 	return (i);
 }
 
-void	tokenize_and_add(char *input, t_elem **tokens_ll, int *exit_status)
+void	tokenize_and_add(char *input, t_elem **tokens_ll, t_my_env *my_env)
 {
 	int		i;
 	int		len;
@@ -58,7 +58,7 @@ void	tokenize_and_add(char *input, t_elem **tokens_ll, int *exit_status)
 	while (input[i])
 	{
 		i = skip_spaces(input, i);
-		i = handle_special_tokens(input, i, tokens_ll, exit_status);
+		i = handle_special_tokens(input, i, tokens_ll, my_env);
 		if (i == -1)
 			return ;
 		else if (input[i] == '\'' || input[i] == '\"')
@@ -103,8 +103,8 @@ void	merge_adjacent_tokens(t_elem **tokens_ll)
 	}
 }
 
-void	tokenize_input(char *input, t_elem **tokens_ll, int *exit_status)
+void	tokenize_input(char *input, t_elem **tokens_ll, t_my_env *my_env)
 {
-	tokenize_and_add(input, tokens_ll, exit_status);
+	tokenize_and_add(input, tokens_ll, my_env);
 	merge_adjacent_tokens(tokens_ll);
 }

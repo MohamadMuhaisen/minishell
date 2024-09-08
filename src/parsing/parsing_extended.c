@@ -72,7 +72,7 @@ char	*get_filename(t_elem **cur, char *redirection_token)
 }
 
 void	handle_redirection(t_ast_node *node, t_elem **cur,
-			t_my_env *my_env, int *exit_status)
+			t_my_env *my_env)
 {
 	char	*redirection_token;
 	char	*filename;
@@ -88,7 +88,7 @@ void	handle_redirection(t_ast_node *node, t_elem **cur,
 	else if (ft_strcmp(redirection_token, "<<") == 0)
 	{
 		if (*cur)
-			capture_heredoc((*cur)->token, node, my_env, exit_status);
+			capture_heredoc((*cur)->token, node, my_env);
 	}
 	else if (ft_strcmp(redirection_token, "<") == 0)
 		handle_input_redirection(node, filename);

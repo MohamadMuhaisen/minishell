@@ -43,7 +43,7 @@ void	free_char_ll(t_ll_node **start)
 }
 
 void	expand_env_vars(t_ast_node *node, int i,
-			t_my_env *my_env, int *exit_status)
+			t_my_env *my_env)
 {
 	t_ll_node	*start;
 	int			j;
@@ -53,7 +53,7 @@ void	expand_env_vars(t_ast_node *node, int i,
 	while (node->arr[i][j])
 	{
 		if (node->arr[i][j] == '$')
-			search_and_add_var(&start, node->arr[i], &j, my_env, exit_status);
+			search_and_add_var(&start, node->arr[i], &j, my_env);
 		else
 			add_to_str(node->arr[i][j++], &start);
 	}

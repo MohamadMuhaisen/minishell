@@ -89,5 +89,5 @@ char	*get_env_var(char *str, t_my_env *my_env)
 			return (my_env->env[i] + var_len + 1);
 		i++;
 	}
-	return ("");
+	return (NULL);
 }

@@ -49,7 +49,7 @@ int	is_valid_identifier(char *key)
 	return (1);
 }
 
-int	execute_unset(t_ast_node *node, t_my_env *my_env, int *exit_status)
+int	execute_unset(t_ast_node *node, t_my_env *my_env)
 {
 	int	i;
 
@@ -61,12 +61,12 @@ int	execute_unset(t_ast_node *node, t_my_env *my_env, int *exit_status)
 			ft_putstr_fd("unset: ", 2);
 			ft_putstr_fd(node->arr[i], 2);
 			ft_putendl_fd(": not a valid identifier", 2);
-			*exit_status = 1;
+			my_env->exit_status = 1;
 		}
 		else
 		{
 			remove_env_var(node->arr[i], my_env);
-			*exit_status = 0;
+			my_env->exit_status = 0;
 		}
 		i++;
 	}

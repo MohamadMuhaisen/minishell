@@ -6,13 +6,14 @@
 #    By: mmuhaise <mmuhaise@student.42beirut.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/26 16:41:56 by mmuhaise          #+#    #+#              #
-#    Updated: 2024/09/04 15:55:48 by mmuhaise         ###   ########.fr        #
+#    Updated: 2024/09/08 19:05:38 by mmuhaise         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 
-SRCS = main utils/utils utils/heredoc utils/path utils/utils_extended utils/printing quotations/quotations quotations/expansion quotations/quotations_utils
+SRCS = main utils/utils utils/heredoc utils/path utils/utils_extended quotations/quotations \
+		quotations/expansion quotations/quotations_utils utils/utils_extra
 
 EXEC_SRCS = exec/execution exec/pipe_execution exec/sc_execution exec/exec_utils
 

@@ -35,7 +35,7 @@ pid_t	fork_process(void)
 }
 
 void	execute_left_command(t_ast_node *node, t_my_env *my_env,
-		int *exit_status, int pipefd[2])
+		int pipefd[2])
 {
 	close(pipefd[0]);
 	if (dup2(pipefd[1], STDOUT_FILENO) == -1)
@@ -44,12 +44,12 @@ void	execute_left_command(t_ast_node *node, t_my_env *my_env,
 		exit(EXIT_FAILURE);
 	}
 	close(pipefd[1]);
-	execute_ast(node->left, my_env, exit_status);
-	exit(*exit_status);
+	execute_ast(node->left, my_env);
+	exit(my_env->exit_status);
 }
 
 void	execute_right_command(t_ast_node *node, t_my_env *my_env,
-		int *exit_status, int pipefd[2])
+		int pipefd[2])
 {
 	close(pipefd[1]);
 	if (dup2(pipefd[0], STDIN_FILENO) == -1)
@@ -58,12 +58,12 @@ void	execute_right_command(t_ast_node *node, t_my_env *my_env,
 		exit(EXIT_FAILURE);
 	}
 	close(pipefd[0]);
-	execute_ast(node->right, my_env, exit_status);
-	exit(*exit_status);
+	execute_ast(node->right, my_env);
+	exit(my_env->exit_status);
 }
 
 void	close_pipe_and_wait(int pipefd[2], pid_t left_pid,
-			pid_t right_pid, int *exit_status)
+			pid_t right_pid, t_my_env *my_env)
 {
 	int	status;
 
@@ -72,7 +72,7 @@ void	close_pipe_and_wait(int pipefd[2], pid_t left_pid,
 	waitpid(left_pid, NULL, 0);
 	waitpid(right_pid, &status, 0);
 	if (WIFEXITED(status))
-		*exit_status = WEXITSTATUS(status);
+		my_env->exit_status = WEXITSTATUS(status);
 	else
-		*exit_status = 1;
+		my_env->exit_status = 1;
 }

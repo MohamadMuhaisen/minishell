@@ -12,7 +12,7 @@
 
 #include "../../minishell.h"
 
-void	execute_pipe(t_ast_node *node, t_my_env *my_env, int *exit_status)
+void	execute_pipe(t_ast_node *node, t_my_env *my_env)
 {
 	int		pipefd[2];
 	pid_t	left_pid;
@@ -21,15 +21,14 @@ void	execute_pipe(t_ast_node *node, t_my_env *my_env, int *exit_status)
 	create_pipe(pipefd);
 	left_pid = fork_process();
 	if (left_pid == 0)
-		execute_left_command(node, my_env, exit_status, pipefd);
+		execute_left_command(node, my_env, pipefd);
 	right_pid = fork_process();
 	if (right_pid == 0)
-		execute_right_command(node, my_env, exit_status, pipefd);
-	close_pipe_and_wait(pipefd, left_pid, right_pid, exit_status);
+		execute_right_command(node, my_env, pipefd);
+	close_pipe_and_wait(pipefd, left_pid, right_pid, my_env);
 }
 
-int	handle_special_commands(t_ast_node *node, t_my_env *my_env,
-		int *exit_status)
+int	handle_special_commands(t_ast_node *node, t_my_env *my_env)
 {
 	if (!node || !node->arr)
 		return (0);
@@ -43,14 +42,13 @@ int	handle_special_commands(t_ast_node *node, t_my_env *my_env,
 			|| ft_strcmp(node->arr[0], "env") == 0
 			|| ft_strcmp(node->arr[0], "exit") == 0)
 		{
-			return (handle_builtins(node, my_env, exit_status));
+			return (handle_builtins(node, my_env));
 		}
 	}
 	return (0);
 }
 
-void	execute_general_commands(t_ast_node *node, t_my_env *my_env,
-			int *exit_status)
+void	execute_general_commands(t_ast_node *node, t_my_env *my_env)
 {
 	int		status;
 	pid_t	pid;
@@ -61,27 +59,27 @@ void	execute_general_commands(t_ast_node *node, t_my_env *my_env,
 	{
 		pid = fork();
 		if (pid == 0)
-			execute_simple_command(node, my_env, exit_status);
+			execute_simple_command(node, my_env);
 		wait(&status);
 		if (WIFEXITED(status))
-			*exit_status = WEXITSTATUS(status);
+			my_env->exit_status = WEXITSTATUS(status);
 		else
-			*exit_status = 0;
+			my_env->exit_status = 0;
 	}
 	else if (node->type == PIPE)
-		execute_pipe(node, my_env, exit_status);
+		execute_pipe(node, my_env);
 }
 
-void	execute_ast(t_ast_node *node, t_my_env *my_env, int *exit_status)
+void	execute_ast(t_ast_node *node, t_my_env *my_env)
 {
 	if (!node)
 		return ;
-	traverse_and_clean_tree(node, my_env, exit_status);
-	if (!handle_special_commands(node, my_env, exit_status))
-		execute_general_commands(node, my_env, exit_status);
+	traverse_and_clean_tree(node, my_env);
+	if (!handle_special_commands(node, my_env))
+		execute_general_commands(node, my_env);
 }
 
-int	handle_builtins(t_ast_node *node, t_my_env *my_env, int *exit_status)
+int	handle_builtins(t_ast_node *node, t_my_env *my_env)
 {
 	if (ft_strcmp(node->arr[0], "env") == 0)
 	{
@@ -90,22 +88,22 @@ int	handle_builtins(t_ast_node *node, t_my_env *my_env, int *exit_status)
 	}
 	else if (ft_strcmp(node->arr[0], "cd") == 0)
 	{
-		if (node->arr[2])
+		if (node->arr[1] && node->arr[2])
 		{
-			*exit_status = 1;
+			my_env->exit_status = 1;
 			ft_putstr_fd(node->arr[0], 2);
 			ft_putendl_fd(": too many arguments", 2);
 			return (1);
 		}
 		else
-			return (execute_cd(node->arr[1], my_env, exit_status));
+			return (execute_cd(node->arr[1], my_env));
 	}
 	else if (ft_strcmp(node->arr[0], "export") == 0)
-		return (execute_export(node, my_env, exit_status));
+		return (execute_export(node, my_env));
 	else if (ft_strcmp(node->arr[0], "unset") == 0)
-		return (execute_unset(node, my_env, exit_status));
+		return (execute_unset(node, my_env));
 	else if (ft_strcmp(node->arr[0], "exit") == 0)
-		return (execute_exit(node, my_env, exit_status));
+		return (execute_exit(node, my_env));
 	return (0);
 }
 
