@@ -6,7 +6,7 @@
 /*   By: mmuhaise <mmuhaise@student.42beirut.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 19:23:47 by mmuhaise          #+#    #+#             */
-/*   Updated: 2024/09/04 14:56:55 by mmuhaise         ###   ########.fr       */
+/*   Updated: 2024/09/09 05:14:35 by mmuhaise         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,10 +102,13 @@ void	traverse_and_clean_tree(t_ast_node *head,
 {
 	int	i;
 
-	if (head->left)
-		traverse_and_clean_tree(head->left, my_env);
-	if (head->right)
-		traverse_and_clean_tree(head->right, my_env);
+	if (head)
+	{
+		if (head->left)
+			traverse_and_clean_tree(head->left, my_env);
+		if (head->right)
+			traverse_and_clean_tree(head->right, my_env);
+	}
 	i = 0;
 	if (head && head->arr)
 	{

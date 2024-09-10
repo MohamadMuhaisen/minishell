@@ -6,7 +6,7 @@
 /*   By: mmuhaise <mmuhaise@student.42beirut.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 15:24:43 by mmuhaise          #+#    #+#             */
-/*   Updated: 2024/09/08 22:03:22 by mmuhaise         ###   ########.fr       */
+/*   Updated: 2024/09/09 07:57:42 by mmuhaise         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ void	handle_output_redirection(t_ast_node *node, char *filename)
 {
 	int	fd_out;
 
-	// filename = strip_quotes(filename);
 	if (!node->err)
 	{
 		fd_out = open(filename, O_WRONLY | O_CREAT, 0644);

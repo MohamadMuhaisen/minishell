@@ -6,7 +6,7 @@
 /*   By: mmuhaise <mmuhaise@student.42beirut.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 12:13:10 by mmuhaise          #+#    #+#             */
-/*   Updated: 2024/09/08 19:03:28 by mmuhaise         ###   ########.fr       */
+/*   Updated: 2024/09/10 23:47:19 by mmuhaise         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,15 +26,20 @@ t_elem	*create_elem(char *token)
 
 int	create_heredoc_file(char **filename)
 {
-	char	*pid_str;
-	size_t	offset;
-	pid_t	pid;
-	int		fd;
+	char		*pid_str;
+	static int	x = -1;
+	size_t		offset;
+	pid_t		pid;
+	int			fd;
+	char		*strx;
 
+	x--;
 	*filename = malloc(64);
 	if (!*filename)
 		return (-1);
-	ft_strlcpy(*filename, "heredoc_temp_", 64);
+	strx = ft_itoa(x);
+	ft_strlcpy(*filename, strx, 64);
+	free(strx);
 	pid = getpid();
 	pid_str = ft_itoa(pid);
 	if (!pid_str)
@@ -42,7 +47,9 @@ int	create_heredoc_file(char **filename)
 		free(*filename);
 		return (-1);
 	}
-	offset = ft_strlen("heredoc_temp_");
+	strx = ft_itoa(x);
+	offset = ft_strlen(strx);
+	free(strx);
 	ft_strlcpy(*filename + offset, pid_str, 64 - offset);
 	ft_strlcat(*filename, ".txt", 64);
 	free(pid_str);
@@ -79,57 +86,8 @@ void	ft_sigint_handler_incmd(int sig)
 	rl_replace_line("", 1);
 	ft_putchar_fd('\n', 1);
 	rl_on_new_line();
+	rl_redisplay();
 	rl_done = 1;
-}
-
-void	handle_heredoc_input(int fd, char *limiter, t_my_env *myenv)
-{
-	char		*input;
-	t_ast_node	temp_node;
-	char		*cleaned_limiter;
-
-	signal(SIGINT, ft_sigint_handler_incmd);
-	cleaned_limiter = strip_quotes(limiter);
-	while (1)
-	{
-		input = readline("> ");
-		if (!input)
-		{
-			free(cleaned_limiter);
-			return ;
-		}
-		if (ft_strcmp(input, cleaned_limiter) == 0)
-		{
-			free(input);
-			break ;
-		}
-		temp_node.arr = malloc(sizeof(char *) * 2);
-		temp_node.arr[0] = input;
-		temp_node.arr[1] = NULL;
-		expand_env_vars(&temp_node, 0, myenv);
-		write(fd, temp_node.arr[0], ft_strlen(temp_node.arr[0]));
-		write(fd, "\n", 1);
-		free(temp_node.arr[0]);
-		free(temp_node.arr);
-	}
-	free(cleaned_limiter);
-	signal(SIGINT, ft_sigint_handler_beforecmd);
-}
-
-void	capture_heredoc(char *limiter, t_ast_node *node, t_my_env *myenv)
-{
-	int		fd;
-	char	*filename;
-
-	fd = create_heredoc_file(&filename);
-	if (fd == -1)
-	{
-		perror("open");
-		return ;
-	}
-	handle_heredoc_input(fd, limiter, myenv);
-	close(fd);
-	node->heredoc = filename;
 }
 
 /////////////////////////////////////////////

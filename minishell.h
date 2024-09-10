@@ -6,7 +6,7 @@
 /*   By: mmuhaise <mmuhaise@student.42beirut.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/26 17:02:22 by mmuhaise          #+#    #+#             */
-/*   Updated: 2024/09/08 21:56:48 by mmuhaise         ###   ########.fr       */
+/*   Updated: 2024/09/09 20:58:47 by mmuhaise         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ typedef struct s_ast_node {
 	char				*heredoc;
 	int					append;
 	int					err;
+	int					ex_heredoc;
 	struct s_ast_node	*left;
 	struct s_ast_node	*right;
 }	t_ast_node;
@@ -131,6 +132,11 @@ void		replace_cleaned_str(t_ll_node **lst, t_ast_node *head, int i);
 void		handle_double_dollar(t_ll_node **lst);
 void		ft_check_signal(t_my_env *my_env);
 char		*strip_quotes(char *str);
+void		print_ast_node(t_ast_node *node);
+void		ft_sigint_handler_incmd(int sig);
+int			create_heredoc_file(char **filename);
+void		change_i_helper(int *i, char *tofind);
+void		handle_sigquit_cat(int sig);
 
 #endif
 

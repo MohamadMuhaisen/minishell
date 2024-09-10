@@ -6,7 +6,7 @@
 /*   By: mmuhaise <mmuhaise@student.42beirut.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 14:34:15 by mmuhaise          #+#    #+#             */
-/*   Updated: 2024/09/03 14:12:50 by mmuhaise         ###   ########.fr       */
+/*   Updated: 2024/09/10 23:49:50 by mmuhaise         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ int	handle_special_commands(t_ast_node *node, t_my_env *my_env)
 void	execute_general_commands(t_ast_node *node, t_my_env *my_env)
 {
 	int		status;
+	int		sig;
 	pid_t	pid;
 
 	if (!node)
@@ -60,11 +61,22 @@ void	execute_general_commands(t_ast_node *node, t_my_env *my_env)
 		pid = fork();
 		if (pid == 0)
 			execute_simple_command(node, my_env);
-		wait(&status);
-		if (WIFEXITED(status))
-			my_env->exit_status = WEXITSTATUS(status);
-		else
-			my_env->exit_status = 0;
+		else if (pid > 0)
+		{
+			waitpid(pid, &status, 0);
+			if (WIFSIGNALED(status))
+			{
+				sig = WTERMSIG(status);
+				if (sig == SIGQUIT)
+					my_env->exit_status = 128 + SIGQUIT;
+				else if (sig == SIGINT)
+					my_env->exit_status = 128 + SIGINT;
+			}
+			else if (WIFEXITED(status))
+				my_env->exit_status = WEXITSTATUS(status);
+			else
+				my_env->exit_status = 1;
+		}
 	}
 	else if (node->type == PIPE)
 		execute_pipe(node, my_env);

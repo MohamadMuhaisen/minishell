@@ -6,7 +6,7 @@
 /*   By: mmuhaise <mmuhaise@student.42beirut.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 17:13:29 by mmuhaise          #+#    #+#             */
-/*   Updated: 2024/09/08 21:38:02 by mmuhaise         ###   ########.fr       */
+/*   Updated: 2024/09/09 21:00:04 by mmuhaise         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,9 +64,30 @@ void	handle_redirections_exec(t_ast_node *node)
 	}
 }
 
+void	check_exit_signals(t_ast_node *node, t_my_env *my_env)
+{
+	if (g_signal_exit_status == SIGINT)
+	{
+		my_env->exit_status = 130;
+		g_signal_exit_status = 0;
+		exit(my_env->exit_status);
+	}
+	if (g_signal_exit_status == SIGQUIT)
+	{
+		my_env->exit_status = 131;
+		g_signal_exit_status = 0;
+	}
+	if (node->ex_heredoc)
+	{
+		node->ex_heredoc = 0;
+		exit(0);
+	}
+}
+
 void	execute_command(char *command_path, t_ast_node *node,
 			t_my_env *my_env)
 {
+	check_exit_signals(node, my_env);
 	if (command_path)
 	{
 		execve(command_path, node->arr, my_env->env);
@@ -87,7 +108,6 @@ void	execute_command(char *command_path, t_ast_node *node,
 		ft_putendl_fd(": command not found", 2);
 		my_env->exit_status = 127;
 	}
-	exit(my_env->exit_status);
 }
 
 void	handle_heredoc(t_ast_node *node)

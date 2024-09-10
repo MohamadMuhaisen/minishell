@@ -6,13 +6,61 @@
 /*   By: mmuhaise <mmuhaise@student.42beirut.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/26 16:43:42 by mmuhaise          #+#    #+#             */
-/*   Updated: 2024/09/08 22:02:50 by mmuhaise         ###   ########.fr       */
+/*   Updated: 2024/09/10 23:26:19 by mmuhaise         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
 int	g_signal_exit_status = 0;
+
+int	quotes_check(char *str)
+{
+	int		i;
+	int		is_closed;
+	char	quote;
+
+	i = 0;
+	is_closed = 1;
+	while (str[i])
+	{
+		if (str[i] == '\'' || str[i] == '"')
+		{
+			quote = str[i];
+			is_closed = 0;
+			i++;
+			while (str[i])
+			{
+				if (str[i] == quote)
+				{
+					is_closed = 1;
+					break ;
+				}
+				i++;
+			}
+		}
+		i++;
+	}
+	return (is_closed);
+}
+
+void	loop_utils(t_ast_node **ast_root, t_elem **tokens_ll,
+			char **input, char **prompt)
+{
+	cleanup_heredoc_file(*ast_root);
+	free_tokens(*tokens_ll);
+	*tokens_ll = NULL;
+	free_ast(*ast_root);
+	free(*input);
+	free(*prompt);
+}
+
+void	prep_signals(void)
+{
+	signal(SIGINT, ft_sigint_handler_beforecmd);
+	signal(SIGQUIT, handle_sigquit);
+}
+
 
 void	prompt_loop(t_my_env *my_env)
 {
@@ -23,8 +71,7 @@ void	prompt_loop(t_my_env *my_env)
 
 	tokens_ll = NULL;
 	my_env->exit_status = 0;
-	signal(SIGINT, ft_sigint_handler_beforecmd);
-	signal(SIGQUIT, handle_sigquit);
+	prep_signals();
 	while (1)
 	{
 		prompt = ft_strjoin("Minishell", "$ ");
@@ -34,17 +81,17 @@ void	prompt_loop(t_my_env *my_env)
 			free(prompt);
 			break ;
 		}
+		if (!quotes_check(input))
+		{
+			printf("Oops, you missed a quote :)\n");
+			continue ;
+		}
 		add_history(input);
 		ft_check_signal(my_env);
 		tokenize_input(input, &tokens_ll, my_env);
 		ast_root = build_ast(tokens_ll, my_env);
 		execute_ast(ast_root, my_env);
-		cleanup_heredoc_file(ast_root);
-		free_tokens(tokens_ll);
-		tokens_ll = NULL;
-		free_ast(ast_root);
-		free(input);
-		free(prompt);
+		loop_utils(&ast_root, &tokens_ll, &input, &prompt);
 	}
 	free(tokens_ll);
 }

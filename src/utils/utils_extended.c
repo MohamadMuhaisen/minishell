@@ -6,7 +6,7 @@
 /*   By: mmuhaise <mmuhaise@student.42beirut.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 10:33:33 by mmuhaise          #+#    #+#             */
-/*   Updated: 2024/09/08 20:53:48 by mmuhaise         ###   ########.fr       */
+/*   Updated: 2024/09/11 01:18:24 by mmuhaise         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ t_ast_node	*new_ast_node(t_type type)
 	node->heredoc = NULL;
 	node->append = 0;
 	node->err = 0;
+	node->ex_heredoc = 0;
 	return (node);
 }
 

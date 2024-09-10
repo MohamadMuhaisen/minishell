@@ -6,7 +6,7 @@
 /*   By: mmuhaise <mmuhaise@student.42beirut.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 18:59:11 by mmuhaise          #+#    #+#             */
-/*   Updated: 2024/09/03 21:08:18 by mmuhaise         ###   ########.fr       */
+/*   Updated: 2024/09/11 01:17:23 by mmuhaise         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ int	execute_export(t_ast_node *node, t_my_env *my_env)
 	if (!node->arr[1])
 		return (handle_no_args_export(my_env));
 	i = 1;
+	// printf("D%sD\n", node->arr[1]);
 	while (node->arr[i])
 	{
 		if (parse_key_value(node->arr[i], &key, &value))
@@ -68,6 +69,7 @@ int	execute_export(t_ast_node *node, t_my_env *my_env)
 			my_env->exit_status = 1;
 			return (1);
 		}
+		// printf("S%sS X%sX\n", key, value);
 		if (!update_existing_env(key, value, my_env))
 			add_new_env_var(key, value, my_env);
 		free(key);
