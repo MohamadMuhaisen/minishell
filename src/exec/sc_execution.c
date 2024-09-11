@@ -6,35 +6,11 @@
 /*   By: mmuhaise <mmuhaise@student.42beirut.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 17:13:29 by mmuhaise          #+#    #+#             */
-/*   Updated: 2024/09/09 21:00:04 by mmuhaise         ###   ########.fr       */
+/*   Updated: 2024/09/11 06:31:50 by mmuhaise         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
-
-char	*get_command_path(t_ast_node *node, t_my_env *my_env)
-{
-	char	*command_path;
-
-	command_path = find_path(node->arr[0], my_env->env);
-	if (!command_path && !node->heredoc)
-	{
-		if (access(node->arr[0], F_OK) == 0 && access(node->arr[0], X_OK) != 0)
-		{
-			ft_putstr_fd(node->arr[0], 2);
-			ft_putendl_fd(": Permission denied", 2);
-			my_env->exit_status = 126;
-		}
-		else
-		{
-			ft_putstr_fd(node->arr[0], 2);
-			ft_putendl_fd(": command not found", 2);
-			my_env->exit_status = 127;
-		}
-		exit(my_env->exit_status);
-	}
-	return (command_path);
-}
 
 void	handle_redirections_exec(t_ast_node *node)
 {
@@ -87,7 +63,11 @@ void	check_exit_signals(t_ast_node *node, t_my_env *my_env)
 void	execute_command(char *command_path, t_ast_node *node,
 			t_my_env *my_env)
 {
-	check_exit_signals(node, my_env);
+	if (ft_strcmp(node->arr[0], "echo") == 0)
+	{
+		execute_echo(node, my_env);
+		return ;
+	}
 	if (command_path)
 	{
 		execve(command_path, node->arr, my_env->env);
@@ -145,8 +125,9 @@ void	execute_simple_command(t_ast_node *node,
 		my_env->exit_status = 126;
 		exit(my_env->exit_status);
 	}
-	command_path = get_command_path(node, my_env);
+	command_path = find_path(node->arr[0], my_env->env);
 	handle_heredoc(node);
 	handle_redirections_exec(node);
+	check_exit_signals(node, my_env);
 	execute_command(command_path, node, my_env);
 }

@@ -6,7 +6,7 @@
 /*   By: mmuhaise <mmuhaise@student.42beirut.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/26 17:02:22 by mmuhaise          #+#    #+#             */
-/*   Updated: 2024/09/09 20:58:47 by mmuhaise         ###   ########.fr       */
+/*   Updated: 2024/09/11 06:39:20 by mmuhaise         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 # include <sys/stat.h>
 # include <errno.h>
 
-extern int g_signal_exit_status;
+extern int	g_signal_exit_status;
 
 typedef enum e_type{
 	PIPE,
@@ -90,14 +90,15 @@ void		handle_quotes(char *input, t_elem **tokens_ll, int *i);
 char		*ft_get_token(const char *str, int len);
 char		*get_env_var(char *str, t_my_env *my_env);
 int			handle_builtins(t_ast_node *node, t_my_env *my_env);
-int			execute_echo(t_ast_node *node, t_my_env *my_env, int *exit_status);
+void		execute_echo(t_ast_node *node, t_my_env *my_env);
 int			execute_export(t_ast_node *node, t_my_env *my_env);
 int			count_env_vars(char **env);
 char		**copy_env(char **env);
 void		free_env(char **env_cpy);
 int			handle_no_args_export(t_my_env *my_env);
 int			parse_key_value(char *arg, char **key, char **value);
-int			update_existing_env(char *key, char *value, t_my_env *my_env);
+int			update_existing_env(char *key, char *value,
+				t_my_env *my_env, int has_equal);
 int			execute_unset(t_ast_node *node, t_my_env *my_env);
 int			execute_exit(t_ast_node *node, t_my_env *my_env);
 int			is_valid_identifier_export(const char *str);
@@ -110,7 +111,8 @@ void		traverse_and_clean_tree(t_ast_node *head,
 				t_my_env *my_env);
 void		search_and_add_var(t_ll_node **lst, char *str,
 				int *j, t_my_env *myenv);
-void		add_new_env_var(char *key, char *value, t_my_env *my_env);
+void		add_new_env_var(char *key, char *value,
+				t_my_env *my_env, int has_equal);
 int			open_input_file(const char *filepath);
 void		apply_input_redirection(int fd_in);
 void		handle_input_redirection(t_ast_node *node, char *filename);
@@ -137,6 +139,8 @@ void		ft_sigint_handler_incmd(int sig);
 int			create_heredoc_file(char **filename);
 void		change_i_helper(int *i, char *tofind);
 void		handle_sigquit_cat(int sig);
+int			handle_special_commands(t_ast_node *node, t_my_env *my_env);
+void		prep_signals(void);
 
 #endif
 
@@ -145,12 +149,8 @@ void		handle_sigquit_cat(int sig);
 // CTRL C in multiple minishells
 // change PWD in env
 // cat CTRL C exit code and general CTRL C exit code
-
 // CTRL + C with old value
-
 // cat < file1 | echo "hello world | file1 > file 2" > file2
-
-
 // "cat"
 // "<"
 // "file1"
@@ -159,14 +159,12 @@ void		handle_sigquit_cat(int sig);
 // "hello world | file1 > file 2"
 // ">"
 // "file2"
-
 // Basic Pipe Commands
 // ls | wc
 // echo hello | cat
 // ps aux | grep bash
 // who | wc -l
 // cat /etc/passwd | grep root
-
 // Pipes with Multiple Commands
 // ls -l | grep '^d' | wc -l
 // cat file1 | sort | uniq | wc -l
@@ -174,35 +172,30 @@ void		handle_sigquit_cat(int sig);
 // find . -type f | xargs wc -l | sort -n
 // ls -la | grep '^-' | sort -k 5 -n
 // Pipes with Redirection
-
 // cat file1.txt | grep 'pattern' > output.txt
 // ls | tee file1.txt | wc -l
 // echo "data" | tee file1.txt file2.txt | cat -n
 // cat < input.txt | grep 'pattern' | sort > output.txt
 // grep "error" < file1.txt | sort | uniq > output.txt ********
 // Pipes with Quotes and Special Characters
-
 // echo "hello | world" | cat
 // echo 'single | quotes' | cat
 // echo "|start and end|" | cat
 // echo 'ls | wc' | bash
 // echo 'ps aux | grep "httpd"' | sh
 // Complex Commands with Pipes, Redirection, and Quotes
-
 // cat file1 < file2 | grep 'pattern' > output.txt
 // echo "pattern" | grep "pattern" | tee file.txt
 // ls -la | grep '^d' | sort | uniq | wc -l
 // cat file1.txt file2.txt | grep -v '^#' | sort | uniq > output.txt
 // echo "content" | cat > file1.txt | wc -l
 // Edge Cases
-
 // cat file1 < file2 < file3 > file4 | grep "pattern" > file5
 // cat <file1 | grep "pattern" | sort | uniq | wc -l
 // echo "start" | tee >(grep "pattern" > file1.txt) >(sort > file2.txt)
 // find . -type f -name "*.c" | xargs grep -H "main" | sort > results.txt
 // cat <(ls | grep "^a") <(ls | grep "^b")
 // Commands Mixing Pipes with Errors
-
 // ls non_existing_file | wc -l
 // grep "pattern" | sort | non_existing_command
 // cat < non_existing_file | wc -l

@@ -6,7 +6,7 @@
 /*   By: mmuhaise <mmuhaise@student.42beirut.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 07:52:01 by mmuhaise          #+#    #+#             */
-/*   Updated: 2024/09/10 23:48:04 by mmuhaise         ###   ########.fr       */
+/*   Updated: 2024/09/11 01:27:42 by mmuhaise         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,12 +73,6 @@ void	capture_heredoc(char *limiter, t_ast_node *node, t_my_env *myenv)
 	if (pid == 0)
 		handle_heredoc_input(fd, limiter, myenv, node);
 	waitpid(pid, &status, 0);
-	// if (g_signal_exit_status == 55)
-	// {
-	// 	printf("HERE!\n");
-	// 	g_signal_exit_status = 0;
-	// 	exit(130);
-	// }
 	if (WIFEXITED(status) && WEXITSTATUS(status) == 1)
 		node->ex_heredoc = 1;
 	close(fd);

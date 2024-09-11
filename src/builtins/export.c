@@ -6,7 +6,7 @@
 /*   By: mmuhaise <mmuhaise@student.42beirut.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 18:00:08 by mmuhaise          #+#    #+#             */
-/*   Updated: 2024/09/05 11:23:56 by mmuhaise         ###   ########.fr       */
+/*   Updated: 2024/09/11 06:24:35 by mmuhaise         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,25 +100,31 @@ int	parse_key_value(char *arg, char **key, char **value)
 	return (0);
 }
 
-int	update_existing_env(char *key, char *value, t_my_env *my_env)
+int	update_existing_env(char *key, char *value, t_my_env *my_env, int has_equal)
 {
 	int		j;
 	char	*test;
 
-	j = 0;
-	while (my_env->env[j])
+	j = -1;
+	while (my_env->env[++j])
 	{
-		if (ft_strncmp(my_env->env[j], key, ft_strlen(key)) == 0
-			&& my_env->env[j][ft_strlen(key)] == '=')
+		if (ft_strcmp(my_env->env[j], key) == 0
+			|| (ft_strncmp(my_env->env[j], key, ft_strlen(key)) == 0
+				&& my_env->env[j][ft_strlen(key)] == '='))
 		{
 			free(my_env->env[j]);
-			test = ft_strjoin(key, "=");
+			if (has_equal)
+				test = ft_strjoin(key, "=");
+			else
+				test = ft_strjoin(key, "");
 			my_env->env[j] = test;
-			my_env->env[j] = ft_strjoin(my_env->env[j], value);
+			if (value)
+				my_env->env[j] = ft_strjoin(my_env->env[j], value);
+			else
+				my_env->env[j] = ft_strjoin(my_env->env[j], "");
 			free(test);
 			return (1);
 		}
-		j++;
 	}
 	return (0);
 }

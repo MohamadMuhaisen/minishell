@@ -6,7 +6,7 @@
 /*   By: mmuhaise <mmuhaise@student.42beirut.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 15:13:20 by mmuhaise          #+#    #+#             */
-/*   Updated: 2024/09/03 15:14:02 by mmuhaise         ###   ########.fr       */
+/*   Updated: 2024/09/11 06:28:55 by mmuhaise         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,4 +33,24 @@ void	apply_input_redirection(int fd_in)
 		exit(EXIT_FAILURE);
 	}
 	close(fd_in);
+}
+
+int	handle_special_commands(t_ast_node *node, t_my_env *my_env)
+{
+	if (!node || !node->arr)
+		return (0);
+	if (node->arr[0])
+	{
+		if (ft_strcmp(node->arr[0], "echo") == 0
+			|| ft_strcmp(node->arr[0], "cd") == 0
+			|| ft_strcmp(node->arr[0], "pwd") == 0
+			|| ft_strcmp(node->arr[0], "export") == 0
+			|| ft_strcmp(node->arr[0], "unset") == 0
+			|| ft_strcmp(node->arr[0], "env") == 0
+			|| ft_strcmp(node->arr[0], "exit") == 0)
+		{
+			return (handle_builtins(node, my_env));
+		}
+	}
+	return (0);
 }

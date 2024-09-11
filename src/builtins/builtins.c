@@ -6,7 +6,7 @@
 /*   By: mmuhaise <mmuhaise@student.42beirut.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/26 18:34:27 by mmuhaise          #+#    #+#             */
-/*   Updated: 2024/09/08 18:57:16 by mmuhaise         ###   ########.fr       */
+/*   Updated: 2024/09/11 04:38:01 by mmuhaise         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 void	update_env_oldpwd(char *old, t_my_env *my_env)
 {
-	if (!update_existing_env("OLDPWD", old, my_env))
-		add_new_env_var("OLDPWD", old, my_env);
+	if (!update_existing_env("OLDPWD", old, my_env, 1))
+		add_new_env_var("OLDPWD", old, my_env, 1);
 }
 
 int	change_directory(char *arg, t_my_env *my_env)
@@ -51,8 +51,8 @@ int	handle_cd_execution(char *arg, t_my_env *my_env)
 	{
 		pwd = getcwd(buf, sizeof(buf));
 		update_env_oldpwd(old, my_env);
-		if (!update_existing_env("PWD", pwd, my_env))
-			add_new_env_var("PWD", pwd, my_env);
+		if (!update_existing_env("PWD", pwd, my_env, 1))
+			add_new_env_var("PWD", pwd, my_env, 1);
 		my_env->exit_status = 0;
 	}
 	return (1);
@@ -70,8 +70,8 @@ int	execute_cd(char *arg, t_my_env *my_env)
 		update_env_oldpwd(old, my_env);
 		chdir(get_env_var("$HOME", my_env));
 		pwd = getcwd(buf, sizeof(buf));
-		if (!update_existing_env("PWD", pwd, my_env))
-			add_new_env_var("PWD", pwd, my_env);
+		if (!update_existing_env("PWD", pwd, my_env, 1))
+			add_new_env_var("PWD", pwd, my_env, 1);
 		my_env->exit_status = 0;
 		return (1);
 	}

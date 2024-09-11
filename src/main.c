@@ -6,7 +6,7 @@
 /*   By: mmuhaise <mmuhaise@student.42beirut.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/26 16:43:42 by mmuhaise          #+#    #+#             */
-/*   Updated: 2024/09/10 23:26:19 by mmuhaise         ###   ########.fr       */
+/*   Updated: 2024/09/11 06:39:38 by mmuhaise         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@ int	quotes_check(char *str)
 	int		is_closed;
 	char	quote;
 
-	i = 0;
+	i = -1;
 	is_closed = 1;
-	while (str[i])
+	while (str[++i])
 	{
 		if (str[i] == '\'' || str[i] == '"')
 		{
@@ -39,7 +39,6 @@ int	quotes_check(char *str)
 				i++;
 			}
 		}
-		i++;
 	}
 	return (is_closed);
 }
@@ -55,22 +54,26 @@ void	loop_utils(t_ast_node **ast_root, t_elem **tokens_ll,
 	free(*prompt);
 }
 
-void	prep_signals(void)
+void	process_input(char *input, char *prompt, t_my_env *my_env)
 {
-	signal(SIGINT, ft_sigint_handler_beforecmd);
-	signal(SIGQUIT, handle_sigquit);
-}
+	t_elem		*tokens_ll;
+	t_ast_node	*ast_root;
 
+	tokens_ll = NULL;
+	add_history(input);
+	ft_check_signal(my_env);
+	tokenize_input(input, &tokens_ll, my_env);
+	ast_root = build_ast(tokens_ll, my_env);
+	execute_ast(ast_root, my_env);
+	loop_utils(&ast_root, &tokens_ll, &input, &prompt);
+	free(tokens_ll);
+}
 
 void	prompt_loop(t_my_env *my_env)
 {
 	char		*input;
 	char		*prompt;
-	t_elem		*tokens_ll;
-	t_ast_node	*ast_root;
 
-	tokens_ll = NULL;
-	my_env->exit_status = 0;
 	prep_signals();
 	while (1)
 	{
@@ -86,14 +89,8 @@ void	prompt_loop(t_my_env *my_env)
 			printf("Oops, you missed a quote :)\n");
 			continue ;
 		}
-		add_history(input);
-		ft_check_signal(my_env);
-		tokenize_input(input, &tokens_ll, my_env);
-		ast_root = build_ast(tokens_ll, my_env);
-		execute_ast(ast_root, my_env);
-		loop_utils(&ast_root, &tokens_ll, &input, &prompt);
+		process_input(input, prompt, my_env);
 	}
-	free(tokens_ll);
 }
 
 int	main(int ac, char **av, char **env)
@@ -111,10 +108,10 @@ int	main(int ac, char **av, char **env)
 	{
 		shlvl_value = ft_atoi(shlvl) + 1;
 		shlvl = ft_itoa(shlvl_value);
-		update_existing_env("SHLVL", shlvl, my_env);
+		update_existing_env("SHLVL", shlvl, my_env, 1);
 	}
 	else
-		add_new_env_var("SHLVL", "3", my_env);
+		add_new_env_var("SHLVL", "3", my_env, 1);
 	free(shlvl);
 	prompt_loop(my_env);
 	free_env(my_env->env);

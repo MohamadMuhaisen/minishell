@@ -6,7 +6,7 @@
 /*   By: mmuhaise <mmuhaise@student.42beirut.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 12:13:10 by mmuhaise          #+#    #+#             */
-/*   Updated: 2024/09/10 23:47:19 by mmuhaise         ###   ########.fr       */
+/*   Updated: 2024/09/11 06:34:19 by mmuhaise         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,38 +24,50 @@ t_elem	*create_elem(char *token)
 	return (new_elem);
 }
 
+char	*generate_heredoc_filename(int x, pid_t pid)
+{
+	char	*filename;
+	char	*pid_str;
+	char	*strx;
+	size_t	offset;
+
+	strx = ft_itoa(x);
+	pid_str = ft_itoa(pid);
+	if (!strx || !pid_str)
+	{
+		free(strx);
+		free(pid_str);
+		return (NULL);
+	}
+	filename = malloc(64);
+	if (!filename)
+		return (NULL);
+	ft_strlcpy(filename, strx, 64);
+	offset = ft_strlen(strx);
+	ft_strlcpy(filename + offset, pid_str, 64 - offset);
+	ft_strlcat(filename, ".txt", 64);
+	free(strx);
+	free(pid_str);
+	return (filename);
+}
+
 int	create_heredoc_file(char **filename)
 {
-	char		*pid_str;
 	static int	x = -1;
-	size_t		offset;
-	pid_t		pid;
 	int			fd;
-	char		*strx;
+	pid_t		pid;
 
 	x--;
-	*filename = malloc(64);
+	pid = getpid();
+	*filename = generate_heredoc_filename(x, pid);
 	if (!*filename)
 		return (-1);
-	strx = ft_itoa(x);
-	ft_strlcpy(*filename, strx, 64);
-	free(strx);
-	pid = getpid();
-	pid_str = ft_itoa(pid);
-	if (!pid_str)
+	fd = open(*filename, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+	if (fd == -1)
 	{
 		free(*filename);
 		return (-1);
 	}
-	strx = ft_itoa(x);
-	offset = ft_strlen(strx);
-	free(strx);
-	ft_strlcpy(*filename + offset, pid_str, 64 - offset);
-	ft_strlcat(*filename, ".txt", 64);
-	free(pid_str);
-	fd = open(*filename, O_CREAT | O_WRONLY | O_TRUNC, 0644);
-	if (fd == -1)
-		free(*filename);
 	return (fd);
 }
 

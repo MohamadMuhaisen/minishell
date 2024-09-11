@@ -6,7 +6,7 @@
 /*   By: mmuhaise <mmuhaise@student.42beirut.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 19:23:25 by mmuhaise          #+#    #+#             */
-/*   Updated: 2024/09/05 11:27:44 by mmuhaise         ###   ########.fr       */
+/*   Updated: 2024/09/11 04:56:06 by mmuhaise         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,9 @@ void	remove_env_var(char *key, t_my_env *my_env)
 	key_len = ft_strlen(key);
 	while (my_env->env[i])
 	{
-		if (ft_strncmp(my_env->env[i], key, key_len) == 0
-			&& my_env->env[i][key_len] == '=')
+		if (ft_strcmp(my_env->env[i], key) == 0
+			|| (ft_strncmp(my_env->env[i], key, key_len) == 0
+				&& my_env->env[i][key_len] == '='))
 			free(my_env->env[i]);
 		else
 			my_env->env[j++] = my_env->env[i];

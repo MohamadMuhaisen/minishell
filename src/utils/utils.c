@@ -6,7 +6,7 @@
 /*   By: mmuhaise <mmuhaise@student.42beirut.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/26 18:29:56 by mmuhaise          #+#    #+#             */
-/*   Updated: 2024/09/08 19:01:06 by mmuhaise         ###   ########.fr       */
+/*   Updated: 2024/09/11 06:38:59 by mmuhaise         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,18 +52,6 @@ void	free_tokens(t_elem *tokens_ll)
 		free(temp);
 	}
 }
-
-// void	handle_sigint(int sig)
-// {
-// 	char	*prompt;
-
-// 	prompt = ft_strjoin("Minishell", "$ ");
-// 	rl_redisplay();
-// 	rl_replace_line("", 0);
-// 	(void)sig;
-// 	printf("\n%s", prompt);
-// 	free(prompt);
-// }
 
 void	ft_sigint_handler_beforecmd(int sig)
 {
