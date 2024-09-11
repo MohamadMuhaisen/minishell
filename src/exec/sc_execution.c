@@ -6,7 +6,7 @@
 /*   By: mmuhaise <mmuhaise@student.42beirut.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 17:13:29 by mmuhaise          #+#    #+#             */
-/*   Updated: 2024/09/11 06:31:50 by mmuhaise         ###   ########.fr       */
+/*   Updated: 2024/09/11 07:20:13 by mmuhaise         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ void	execute_command(char *command_path, t_ast_node *node,
 	{
 		ft_putstr_fd(node->arr[0], 2);
 		ft_putendl_fd(": command not found", 2);
-		my_env->exit_status = 127;
+		exit(127);
 	}
 }
 
