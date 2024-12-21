@@ -128,7 +128,7 @@ int execute_pwd(t_my_env *my_env)
         }
     }
 
-    printf("%s\n", cwd);
+    ft_printf("%s\n", cwd);
     my_env->exit_status = 0;
     return (1);
 }

@@ -25,7 +25,7 @@ int	change_directory(char *arg, t_my_env *my_env)
 
 	if (arg && *arg == '\0')
 	{
-		printf("cd: OLDPWD not set\n");
+		ft_printf("cd: OLDPWD not set\n");
 		my_env->exit_status = 1;
 		return (1);
 	}

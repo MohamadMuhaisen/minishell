@@ -67,7 +67,7 @@ void	process_input(char *input, char *prompt, t_my_env *my_env)
 	if (!tokenize_input(input, &tokens_ll, my_env))
 	{
 		free(tokens_ll);
-		printf("syntax error near unexpected token `newline'\n");
+		ft_printf("syntax error near unexpected token `newline'\n");
 		return ;
 	}	
 	ast_root = build_ast(tokens_ll, my_env);
@@ -93,7 +93,7 @@ void	prompt_loop(t_my_env *my_env)
 		}
 		if (!quotes_check(input))
 		{
-			printf("Oops, you missed a quote :)\n");
+			ft_printf("Oops, you missed a quote :)\n");
 			free(prompt);
 			free(input);
 			continue ;

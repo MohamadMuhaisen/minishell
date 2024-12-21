@@ -71,7 +71,7 @@ void	tokenize_and_add(char *input, t_elem **tokens_ll, t_my_env *my_env)
 		i = handle_special_tokens(input, i, tokens_ll, my_env);
 		if (i == -1)
 		{
-			printf("returned");
+			//printf("returned");
 			return ;
 		}
 		// else if (input[i] == '\'' || input[i] == '\"')
