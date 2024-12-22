@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmuhaise <mmuhaise@student.42beirut.com    +#+  +:+       +#+        */
+/*   By: mkaterji <mkaterji@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 14:34:15 by mmuhaise          #+#    #+#             */
-/*   Updated: 2024/09/11 06:28:49 by mmuhaise         ###   ########.fr       */
+/*   Updated: 2024/12/22 17:28:41 by mkaterji         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	execute_pipe(t_ast_node *node, t_my_env *my_env)
 		execute_right_command(node, my_env, pipefd);
 	close_pipe_and_wait(pipefd, left_pid, right_pid, my_env);
 	cleanup_heredoc_file(node->left);
-    cleanup_heredoc_file(node->right);
+	cleanup_heredoc_file(node->right);
 }
 
 void	handle_fork_status(int status, t_my_env *my_env)
@@ -75,8 +75,6 @@ void	execute_ast(t_ast_node *node, t_my_env *my_env)
 {
 	if (!node)
 		return ;
-
-	//printf("Original string in node: '%s'\n", node->arr[0]);
 	traverse_and_clean_tree(node, my_env);
 	if (!handle_special_commands(node, my_env))
 		execute_general_commands(node, my_env);
@@ -86,12 +84,8 @@ int	handle_builtins(t_ast_node *node, t_my_env *my_env)
 {
 	if (!node->arr[0])
 		return (0);
-
 	if (ft_strcmp(node->arr[0], "env") == 0)
-	{
-		print_env(my_env);
-		return (1);
-	}
+		return (print_env(my_env), 1);
 	else if (ft_strcmp(node->arr[0], "cd") == 0)
 	{
 		if (node->arr[1] && node->arr[2])
@@ -105,10 +99,7 @@ int	handle_builtins(t_ast_node *node, t_my_env *my_env)
 			return (execute_cd(node->arr[1], my_env));
 	}
 	else if (ft_strcmp(node->arr[0], "pwd") == 0)
-	{
-		// Call your new execute_pwd function
 		return (execute_pwd(my_env));
-	}
 	else if (ft_strcmp(node->arr[0], "export") == 0)
 		return (execute_export(node, my_env));
 	else if (ft_strcmp(node->arr[0], "unset") == 0)
