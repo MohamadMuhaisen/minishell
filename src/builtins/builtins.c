@@ -39,12 +39,95 @@ int	change_directory(char *arg, t_my_env *my_env)
 	return (0);
 }
 
+// int	handle_cd_execution(char *arg, t_my_env *my_env)
+// {
+// 	char	*old;
+// 	char	buf[1024];
+// 	char	*pwd;
+// 	char	*new_pwd;
+
+// 	old = get_env_var("$PWD", my_env);
+// 	if (ft_strcmp(arg, "-") == 0)
+// 	{
+// 		arg = get_env_var("$OLDPWD", my_env);
+// 		if (!arg)
+// 		{
+// 			ft_putstr_fd("cd: OLDPWD not set\n", 2);
+// 			my_env->exit_status = 1;
+// 			return (1);
+// 		}
+// 		ft_printf("%s\n", arg);
+// 	}
+// 	if (change_directory(arg, my_env) == 0)
+// 	{
+// 		pwd = getcwd(buf, sizeof(buf));
+// 		if (!pwd)
+// 		{
+// 			ft_putstr_fd(CDERR, 2);
+// 			pwd = get_env_var("$PWD1", my_env);
+// 			if (pwd)
+// 			{
+// 				new_pwd = ft_strjoin(pwd, "/..");
+// 				update_env_oldpwd(old, my_env);
+// 				update_existing_env("PWD1", new_pwd, my_env, 1);
+// 				if (!update_existing_env("PWD", new_pwd, my_env, 1))
+// 					add_new_env_var("PWD", new_pwd, my_env, 1);
+// 				free(new_pwd);
+// 				my_env->exit_status = 0;
+// 				return (1);
+// 			}
+// 			else
+// 			{
+// 				perror("cd");
+// 				my_env->exit_status = 1;
+// 				return (1);
+// 			}
+// 		}
+// 		update_env_oldpwd(old, my_env);
+// 		if (!update_existing_env("PWD", pwd, my_env, 1))
+// 			add_new_env_var("PWD", pwd, my_env, 1);
+// 		my_env->exit_status = 0;
+// 	}
+// 	else
+// 	{
+// 		perror("cd");
+// 		my_env->exit_status = 1;
+// 	}
+// 	return (1);
+// }
+int	handle_cd_update_pwd(char *pwd, char *old, t_my_env *my_env)
+{
+	char	*new_pwd;
+
+	if (!pwd)
+	{
+		ft_putstr_fd(CDERR, 2);
+		pwd = get_env_var("$PWD1", my_env);
+		if (pwd)
+		{
+			new_pwd = ft_strjoin(pwd, "/..");
+			update_env_oldpwd(old, my_env);
+			update_existing_env("PWD1", new_pwd, my_env, 1);
+			if (!update_existing_env("PWD", new_pwd, my_env, 1))
+				add_new_env_var("PWD", new_pwd, my_env, 1);
+			my_env->exit_status = 0;
+			return (free(new_pwd), 1);
+		}
+		perror("cd");
+		my_env->exit_status = 1;
+		return (1);
+	}
+	update_env_oldpwd(old, my_env);
+	if (!update_existing_env("PWD", pwd, my_env, 1))
+		add_new_env_var("PWD", pwd, my_env, 1);
+	my_env->exit_status = 0;
+	return (0);
+}
+
 int	handle_cd_execution(char *arg, t_my_env *my_env)
 {
 	char	*old;
 	char	buf[1024];
-	char	*pwd;
-	char	*new_pwd;
 
 	old = get_env_var("$PWD", my_env);
 	if (ft_strcmp(arg, "-") == 0)
@@ -52,42 +135,13 @@ int	handle_cd_execution(char *arg, t_my_env *my_env)
 		arg = get_env_var("$OLDPWD", my_env);
 		if (!arg)
 		{
-			ft_putstr_fd("cd: OLDPWD not set\n", 2);
 			my_env->exit_status = 1;
-			return (1);
+			return (ft_putstr_fd("cd: OLDPWD not set\n", 2), 1);
 		}
 		ft_printf("%s\n", arg);
 	}
 	if (change_directory(arg, my_env) == 0)
-	{
-		pwd = getcwd(buf, sizeof(buf));
-		if (!pwd)
-		{
-			ft_putstr_fd(CDERR, 2);
-			pwd = get_env_var("$PWD1", my_env);
-			if (pwd)
-			{
-				new_pwd = ft_strjoin(pwd, "/..");
-				update_env_oldpwd(old, my_env);
-				update_existing_env("PWD1", new_pwd, my_env, 1);
-				if (!update_existing_env("PWD", new_pwd, my_env, 1))
-					add_new_env_var("PWD", new_pwd, my_env, 1);
-				free(new_pwd);
-				my_env->exit_status = 0;
-				return (1);
-			}
-			else
-			{
-				perror("cd");
-				my_env->exit_status = 1;
-				return (1);
-			}
-		}
-		update_env_oldpwd(old, my_env);
-		if (!update_existing_env("PWD", pwd, my_env, 1))
-			add_new_env_var("PWD", pwd, my_env, 1);
-		my_env->exit_status = 0;
-	}
+		handle_cd_update_pwd(getcwd(buf, sizeof(buf)), old, my_env);
 	else
 	{
 		perror("cd");

@@ -3,31 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   export_extended.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmuhaise <mmuhaise@student.42beirut.com    +#+  +:+       +#+        */
+/*   By: mkaterji <mkaterji@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 18:59:11 by mmuhaise          #+#    #+#             */
-/*   Updated: 2024/12/21 13:25:06 by mmuhaise         ###   ########.fr       */
+/*   Updated: 2024/12/22 17:24:29 by mkaterji         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
-
-char	**copy_existing_env_vars(char **env, int env_count)
-{
-	char	**new_env;
-	int		j;
-
-	new_env = malloc((env_count + 2) * sizeof(char *));
-	if (!new_env)
-		return (NULL);
-	j = 0;
-	while (j < env_count)
-	{
-		new_env[j] = env[j];
-		j++;
-	}
-	return (new_env);
-}
 
 void	add_new_env_var(char *key, char *value, t_my_env *my_env, int has_equal)
 {

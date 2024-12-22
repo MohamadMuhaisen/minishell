@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmuhaise <mmuhaise@student.42beirut.com    +#+  +:+       +#+        */
+/*   By: mkaterji <mkaterji@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/26 17:02:22 by mmuhaise          #+#    #+#             */
-/*   Updated: 2024/12/22 14:36:31 by mmuhaise         ###   ########.fr       */
+/*   Updated: 2024/12/22 17:24:47 by mkaterji         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,6 +156,11 @@ int			parse_heredoc_delimiter(char *input, char **delimiter);
 int			is_heredoc_context(t_elem **tokens_ll);
 void		merge_adjacent_tokens_heredoc(t_elem **tokens_ll);
 void		append_token(t_elem **tokens_ll, t_elem *new_token);
+void		handle_invalid_numeric_argument(char *arg);
+void		print_declare_x(char *env_var);
+int			validate_numeric_range(long long exit_code, char *arg);
+int			handle_too_many_arguments(t_my_env *my_env);
+char		**copy_existing_env_vars(char **env, int env_count);
 
 #endif
 //TEST Mhamad ali

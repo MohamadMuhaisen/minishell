@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmuhaise <mmuhaise@student.42beirut.com    +#+  +:+       +#+        */
+/*   By: mkaterji <mkaterji@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 18:00:08 by mmuhaise          #+#    #+#             */
-/*   Updated: 2024/12/21 13:25:39 by mmuhaise         ###   ########.fr       */
+/*   Updated: 2024/12/22 17:16:58 by mkaterji         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ void	print_sorted_env(t_my_env *my_env)
 	int		env_count;
 	int		i;
 	char	**sorted_env;
-	char	*equal_sign;
 
 	env_count = count_env_vars(my_env->env);
 	sorted_env = copy_env(my_env->env);
@@ -49,20 +48,10 @@ void	print_sorted_env(t_my_env *my_env)
 	i = 0;
 	while (i < env_count)
 	{
-		if (ft_strncmp(sorted_env[i], "PWD1=", 5) != 0 &&
-			ft_strncmp(sorted_env[i], "OLDPWD1=", 8) != 0)
+		if (ft_strncmp(sorted_env[i], "PWD1=", 5) != 0
+			&& ft_strncmp(sorted_env[i], "OLDPWD1=", 8) != 0)
 		{
-			equal_sign = ft_strchr(sorted_env[i], '=');
-			if (equal_sign)
-			{
-				*equal_sign = '\0';
-				ft_printf("declare -x %s=\"%s\"\n", sorted_env[i], equal_sign + 1);
-				*equal_sign = '=';
-			}
-			else
-			{
-				ft_printf("declare -x %s\n", sorted_env[i]);
-			}
+			print_declare_x(sorted_env[i]);
 		}
 		i++;
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmuhaise <mmuhaise@student.42beirut.com    +#+  +:+       +#+        */
+/*   By: mkaterji <mkaterji@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 21:45:54 by mmuhaise          #+#    #+#             */
-/*   Updated: 2024/12/21 13:21:59 by mmuhaise         ###   ########.fr       */
+/*   Updated: 2024/12/22 17:23:52 by mkaterji         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,35 +73,18 @@ int	execute_exit(t_ast_node *node, t_my_env *my_env)
 	int			valid;
 
 	if (node->arr[1] && !is_numeric_argument(node->arr[1]))
-	{
-		ft_putstr_fd("exit: ", 2);
-		ft_putstr_fd(node->arr[1], 2);
-		ft_putendl_fd(": numeric argument required", 2);
-		exit(2);
-	}
+		handle_invalid_numeric_argument(node->arr[1]);
 	if (node->arr[1] && node->arr[2])
+		return (handle_too_many_arguments(my_env));
+	if (node->arr[1])
 	{
-		ft_putendl_fd("exit: too many arguments", 2);
-		my_env->exit_status = 1;
-		return (1);
+		exit_code = ft_atoll(node->arr[1], &valid);
+		if (!valid || !validate_numeric_range(exit_code, node->arr[1]))
+			return (1);
 	}
 	else
-	{
-		if (node->arr[1])
-		{
-			exit_code = ft_atoll(node->arr[1], &valid);
-			if (!valid || exit_code < 0 || exit_code > 255)
-			{
-				ft_putstr_fd("exit: ", 2);
-				ft_putstr_fd(node->arr[1], 2);
-				ft_putendl_fd(": numeric argument required", 2);
-				exit(2);
-			}
-		}
-		else
-			exit_code = my_env->exit_status;
-		my_env->exit_status = exit_code;
-		exit(exit_code % 256);
-	}
+		exit_code = my_env->exit_status;
+	my_env->exit_status = exit_code;
+	exit(exit_code % 256);
 	return (1);
 }
