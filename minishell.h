@@ -6,7 +6,7 @@
 /*   By: mmuhaise <mmuhaise@student.42beirut.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/26 17:02:22 by mmuhaise          #+#    #+#             */
-/*   Updated: 2024/09/11 06:39:20 by mmuhaise         ###   ########.fr       */
+/*   Updated: 2024/12/22 14:36:31 by mmuhaise         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@
 # include <sys/wait.h>
 # include <sys/stat.h>
 # include <errno.h>
+# define CDERR "cd: error retrieving current directory: \
+getcwd: cannot access parent directories: No such file or directory\n"
 
 extern int	g_signal_exit_status;
 
@@ -122,7 +124,7 @@ void		handle_input_redirection(t_ast_node *node, char *filename);
 void		handle_output_redirection(t_ast_node *node, char *filename);
 t_ast_node	*parse_simple_command(t_elem **tokens_ll,
 				t_my_env *my_env);
-int		tokenize_input(char *input, t_elem **tokens_ll, t_my_env *my_env);
+int			tokenize_input(char *input, t_elem **tokens_ll, t_my_env *my_env);
 void		add_to_str(char c, t_ll_node **lst);
 void		free_char_ll(t_ll_node **start);
 int			skip_spaces(char *input, int i);
@@ -144,18 +146,21 @@ void		change_i_helper(int *i, char *tofind);
 void		handle_sigquit_cat(int sig);
 int			handle_special_commands(t_ast_node *node, t_my_env *my_env);
 void		prep_signals(void);
-char *expand_line_heredoc(char *line, t_my_env *myenv);
-char *ft_strjoin_char(char *s, char c);
-char *expand_variable(char *input, int *i, t_my_env *myenv);
-char *ft_strjoin_free(char *s1, char *s2);
-int execute_pwd(t_my_env *my_env);
-void	cleanup_heredoc_file(t_ast_node *node);
-int parse_heredoc_delimiter(char *input, char **delimiter);
-int is_heredoc_context(t_elem **tokens_ll);
-void merge_adjacent_tokens_heredoc(t_elem **tokens_ll);
-void append_token(t_elem **tokens_ll, t_elem *new_token);
+char		*expand_line_heredoc(char *line, t_my_env *myenv);
+char		*ft_strjoin_char(char *s, char c);
+char		*expand_variable(char *input, int *i, t_my_env *myenv);
+char		*ft_strjoin_free(char *s1, char *s2);
+int			execute_pwd(t_my_env *my_env);
+void		cleanup_heredoc_file(t_ast_node *node);
+int			parse_heredoc_delimiter(char *input, char **delimiter);
+int			is_heredoc_context(t_elem **tokens_ll);
+void		merge_adjacent_tokens_heredoc(t_elem **tokens_ll);
+void		append_token(t_elem **tokens_ll, t_elem *new_token);
 
 #endif
+//TEST Mhamad ali
+
+//cat<<a>z|grep hello<z
 
 // cat << '$USER' > out
 // CTRL C in heredoc

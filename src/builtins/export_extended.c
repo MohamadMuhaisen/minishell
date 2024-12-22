@@ -6,7 +6,7 @@
 /*   By: mmuhaise <mmuhaise@student.42beirut.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 18:59:11 by mmuhaise          #+#    #+#             */
-/*   Updated: 2024/09/11 06:23:26 by mmuhaise         ###   ########.fr       */
+/*   Updated: 2024/12/21 13:25:06 by mmuhaise         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,10 @@ void	process_export_var(char *arg, t_my_env *my_env, int *invalid)
 	char	*value;
 	int		has_equal;
 
-	has_equal = ft_strchr(arg, '=') ? 1 : 0;
+	if (ft_strchr(arg, '='))
+		has_equal = 1;
+	else
+		has_equal = 0;
 	if (parse_key_value(arg, &key, &value))
 	{
 		my_env->exit_status = 1;
@@ -107,28 +110,23 @@ int	execute_export(t_ast_node *node, t_my_env *my_env)
 	return (1);
 }
 
-int execute_pwd(t_my_env *my_env)
+int	execute_pwd(t_my_env *my_env)
 {
-    char buf[1024];
-    char *cwd;
+	char	buf[1024];
+	char	*cwd;
 
-    cwd = getcwd(buf, sizeof(buf));
-
-    if (!cwd)
-    {
-        // Fallback to the `PWD` environment variable
-        cwd = get_env_var("$PWD", my_env);
-
-        // If both fail, print an error
-        if (!cwd || !*cwd)
-        {
-            ft_putstr_fd("pwd: couldn't find a valid directory\n", 2);
-            my_env->exit_status = 1;
-            return (1);
-        }
-    }
-
-    ft_printf("%s\n", cwd);
-    my_env->exit_status = 0;
-    return (1);
+	cwd = getcwd(buf, sizeof(buf));
+	if (!cwd)
+	{
+		cwd = get_env_var("$PWD", my_env);
+		if (!cwd || !*cwd)
+		{
+			ft_putstr_fd("pwd: couldn't find a valid directory\n", 2);
+			my_env->exit_status = 1;
+			return (1);
+		}
+	}
+	ft_printf("%s\n", cwd);
+	my_env->exit_status = 0;
+	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: mmuhaise <mmuhaise@student.42beirut.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 05:18:16 by mmuhaise          #+#    #+#             */
-/*   Updated: 2024/09/11 06:30:12 by mmuhaise         ###   ########.fr       */
+/*   Updated: 2024/12/21 13:00:28 by mmuhaise         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ void	execute_echo(t_ast_node *node, t_my_env *my_env)
 	}
 	while (node->arr[i])
 	{
-		// printf("%s\n\n\n\n\n", node->arr[i]);
 		ft_putstr_fd(node->arr[i], 1);
 		if (node->arr[i + 1])
 			ft_putchar_fd(' ', 1);

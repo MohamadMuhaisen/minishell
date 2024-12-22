@@ -6,7 +6,7 @@
 /*   By: mmuhaise <mmuhaise@student.42beirut.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 18:00:08 by mmuhaise          #+#    #+#             */
-/*   Updated: 2024/09/11 06:24:35 by mmuhaise         ###   ########.fr       */
+/*   Updated: 2024/12/21 13:25:39 by mmuhaise         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,6 @@ void	print_sorted_env(t_my_env *my_env)
 	}
 	free_env(sorted_env);
 }
-
 
 int	handle_no_args_export(t_my_env *my_env)
 {
