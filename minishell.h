@@ -6,7 +6,7 @@
 /*   By: mkaterji <mkaterji@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/26 17:02:22 by mmuhaise          #+#    #+#             */
-/*   Updated: 2024/12/22 17:24:47 by mkaterji         ###   ########.fr       */
+/*   Updated: 2024/12/22 17:44:50 by mkaterji         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,6 +161,10 @@ void		print_declare_x(char *env_var);
 int			validate_numeric_range(long long exit_code, char *arg);
 int			handle_too_many_arguments(t_my_env *my_env);
 char		**copy_existing_env_vars(char **env, int env_count);
+void		initialize_shell_level(t_my_env *my_env);
+void		initialize_cwd(t_my_env *my_env);
+void		initialize_oldpwd(t_my_env *my_env);
+int			find_closing_quote(char *str, char quote, int *i);
 
 #endif
 //TEST Mhamad ali

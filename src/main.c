@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmuhaise <mmuhaise@student.42beirut.com    +#+  +:+       +#+        */
+/*   By: mkaterji <mkaterji@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/26 16:43:42 by mmuhaise          #+#    #+#             */
-/*   Updated: 2024/09/11 06:39:38 by mmuhaise         ###   ########.fr       */
+/*   Updated: 2024/12/22 17:44:17 by mkaterji         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,29 +18,18 @@ int	quotes_check(char *str)
 {
 	int		i;
 	int		is_closed;
-	char	quote;
 
-	i = -1;
+	i = 0;
 	is_closed = 1;
-	while (str[++i])
+	while (str[i])
 	{
 		if (str[i] == '\'' || str[i] == '"')
 		{
-			quote = str[i];
-			is_closed = 0;
-			i++;
-			while (str[i])
-			{
-				if (str[i] == quote)
-				{
-					is_closed = 1;
-					break ;
-				}
-				i++;
-			}
+			is_closed = find_closing_quote(str, str[i], &i);
+			if (!is_closed)
+				break ;
 		}
-		if (!str[i])
-			break;
+		i++;
 	}
 	return (is_closed);
 }
@@ -48,7 +37,6 @@ int	quotes_check(char *str)
 void	loop_utils(t_ast_node **ast_root, t_elem **tokens_ll,
 			char **input, char **prompt)
 {
-	//cleanup_heredoc_file(*ast_root);
 	free_tokens(*tokens_ll);
 	*tokens_ll = NULL;
 	free_ast(*ast_root);
@@ -105,40 +93,14 @@ void	prompt_loop(t_my_env *my_env)
 int	main(int ac, char **av, char **env)
 {
 	t_my_env	*my_env;
-	char		*shlvl;
-	int			shlvl_value;
-	char		cwd[1024];
 
 	(void)ac;
 	(void)av;
 	my_env = malloc(sizeof(t_my_env));
 	my_env->env = copy_env(env);
-	shlvl = get_env_var("$SHLVL", my_env);
-	if (shlvl)
-	{
-		shlvl_value = ft_atoi(shlvl) + 1;
-		shlvl = ft_itoa(shlvl_value);
-		update_existing_env("SHLVL", shlvl, my_env, 1);
-	}
-	else
-		add_new_env_var("SHLVL", "1", my_env, 1);
-	free(shlvl);
-	add_new_env_var("PWD1", getcwd(cwd, sizeof(cwd)), my_env, 1);
-	//add_new_env_var("OLDPWD1", "1", my_env, 1);
-	if (!get_env_var("$PWD", my_env))
-	{
-		if (getcwd(cwd, sizeof(cwd))) // Get current working directory
-			add_new_env_var("PWD", cwd, my_env, 1);
-		else
-			add_new_env_var("PWD", "/", my_env, 1); // Fallback to root if getcwd fails
-	}
-	if (!get_env_var("$OLDPWD", my_env))
-	{
-		add_new_env_var("OLDPWD", NULL, my_env, 0); // Add as unset
-		add_new_env_var("OLDPWD1", NULL, my_env, 0);
-	}
-	else
-		add_new_env_var("OLDPWD1", get_env_var("$OLDPWD", my_env), my_env, 1);
+	initialize_shell_level(my_env);
+	initialize_cwd(my_env);
+	initialize_oldpwd(my_env);
 	prompt_loop(my_env);
 	free_env(my_env->env);
 	free(my_env);
