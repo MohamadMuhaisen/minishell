@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quotations.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmuhaise <mmuhaise@student.42beirut.com    +#+  +:+       +#+        */
+/*   By: mkaterji <mkaterji@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 19:23:47 by mmuhaise          #+#    #+#             */
-/*   Updated: 2024/09/09 05:14:35 by mmuhaise         ###   ########.fr       */
+/*   Updated: 2024/12/22 17:30:59 by mkaterji         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ void	resolve_quotes(t_ll_node **lst, char *str,
 	}
 	(*j)++;
 }
-
 
 void	resolve_literals(t_ll_node **lst, char *str, int *j)
 {
@@ -83,7 +82,6 @@ void	clean_quotations(t_ast_node *head, int i,
 		return ;
 	while (head->arr[i][j])
 	{
-		//printf("Processing character: '%c'\n", head->arr[i][j]);
 		if (head->arr[i][j] == '"')
 			resolve_quotes(&start, head->arr[i], &j, my_env);
 		else if (head->arr[i][j] == '\'')
@@ -116,7 +114,6 @@ void	traverse_and_clean_tree(t_ast_node *head,
 	{
 		while (head->arr[i])
 		{
-			//printf("Processing string: '%s'\n", head->arr[i]);
 			clean_quotations(head, i, my_env);
 			i++;
 		}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quotations_utils.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmuhaise <mmuhaise@student.42beirut.com    +#+  +:+       +#+        */
+/*   By: mkaterji <mkaterji@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 14:55:30 by mmuhaise          #+#    #+#             */
-/*   Updated: 2024/09/07 14:55:15 by mmuhaise         ###   ########.fr       */
+/*   Updated: 2024/12/22 17:31:05 by mkaterji         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ void	add_to_str(char c, t_ll_node **lst)
 	t_ll_node	*new;
 	t_ll_node	*cur;
 
-	//printf("Adding character: '%c'\n", c);
 	new = (t_ll_node *)malloc(sizeof(t_ll_node));
 	new->c = c;
 	new->next = NULL;
