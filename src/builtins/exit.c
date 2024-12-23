@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmuhaise <mmuhaise@student.42beirut.com    +#+  +:+       +#+        */
+/*   By: mkaterji <mkaterji@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 21:45:54 by mmuhaise          #+#    #+#             */
-/*   Updated: 2024/12/23 17:21:40 by mmuhaise         ###   ########.fr       */
+/*   Updated: 2024/12/23 20:13:51 by mkaterji         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	is_numeric_argument(char *arg)
 		i++;
 	while (arg[i])
 	{
-		if (!isdigit(arg[i]))
+		if (!ft_isdigit(arg[i]))
 		{
 			return (0);
 		}
