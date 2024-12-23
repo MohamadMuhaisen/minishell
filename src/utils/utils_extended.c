@@ -6,7 +6,7 @@
 /*   By: mmuhaise <mmuhaise@student.42beirut.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 10:33:33 by mmuhaise          #+#    #+#             */
-/*   Updated: 2024/09/11 01:18:24 by mmuhaise         ###   ########.fr       */
+/*   Updated: 2024/12/22 18:03:43 by mmuhaise         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,18 +56,18 @@ void	free_ast_helper(t_ast_node *node)
 	free_ast(node->right);
 }
 
-void cleanup_heredoc_file(t_ast_node *node)
+void	cleanup_heredoc_file(t_ast_node *node)
 {
-    if (node && node->heredoc)
-    {
-        struct stat buffer;
-        if (stat(node->heredoc, &buffer) == 0) // Check if file exists
-        {
-            if (remove(node->heredoc) != 0)
-                perror("remove");
-        }
-        free(node->heredoc);
-        node->heredoc = NULL;
-    }
-}
+	struct stat	buffer;
 
+	if (node && node->heredoc)
+	{
+		if (stat(node->heredoc, &buffer) == 0)
+		{
+			if (remove(node->heredoc) != 0)
+				perror("remove");
+		}
+		free(node->heredoc);
+		node->heredoc = NULL;
+	}
+}

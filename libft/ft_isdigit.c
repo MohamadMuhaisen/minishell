@@ -6,7 +6,7 @@
 /*   By: mmuhaise <mmuhaise@student.42beirut.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 23:07:28 by mmuhaise          #+#    #+#             */
-/*   Updated: 2024/06/10 17:11:24 by mmuhaise         ###   ########.fr       */
+/*   Updated: 2024/12/23 11:18:59 by mmuhaise         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 int	ft_isdigit(int c)
 {
+	printf("D%dD\n", c);
 	return ((c >= 48 && c <= 57));
 }
 

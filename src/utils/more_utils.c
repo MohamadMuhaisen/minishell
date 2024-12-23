@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   more_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkaterji <mkaterji@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mmuhaise <mmuhaise@student.42beirut.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/22 17:10:06 by mkaterji          #+#    #+#             */
-/*   Updated: 2024/12/22 17:24:24 by mkaterji         ###   ########.fr       */
+/*   Updated: 2024/12/23 11:21:37 by mmuhaise         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ void	handle_invalid_numeric_argument(char *arg)
 	ft_putendl_fd(": numeric argument required", 2);
 	exit(2);
 }
-
 
 void	print_declare_x(char *env_var)
 {
@@ -36,7 +35,7 @@ void	print_declare_x(char *env_var)
 		ft_printf("declare -x %s\n", env_var);
 }
 
-int validate_numeric_range(long long exit_code, char *arg)
+int	validate_numeric_range(long long exit_code, char *arg)
 {
 	if (exit_code < 0 || exit_code > 255)
 	{

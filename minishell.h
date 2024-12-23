@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkaterji <mkaterji@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mmuhaise <mmuhaise@student.42beirut.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/26 17:02:22 by mmuhaise          #+#    #+#             */
-/*   Updated: 2024/12/22 17:44:50 by mkaterji         ###   ########.fr       */
+/*   Updated: 2024/12/23 15:32:18 by mmuhaise         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,6 +165,9 @@ void		initialize_shell_level(t_my_env *my_env);
 void		initialize_cwd(t_my_env *my_env);
 void		initialize_oldpwd(t_my_env *my_env);
 int			find_closing_quote(char *str, char quote, int *i);
+char		*expand_var_loop(t_my_env *myenv, char *var_name,
+				int var_len, char **var_value);
+void		free_vars(char **strx, char **id_str);
 
 #endif
 //TEST Mhamad ali

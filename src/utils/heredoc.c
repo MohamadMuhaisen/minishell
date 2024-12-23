@@ -6,7 +6,7 @@
 /*   By: mmuhaise <mmuhaise@student.42beirut.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 12:13:10 by mmuhaise          #+#    #+#             */
-/*   Updated: 2024/09/11 06:34:19 by mmuhaise         ###   ########.fr       */
+/*   Updated: 2024/12/23 15:25:46 by mmuhaise         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,91 +24,79 @@ t_elem	*create_elem(char *token)
 	return (new_elem);
 }
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <fcntl.h>
-#include <unistd.h>
-
-char *generate_heredoc_filename(int x, int unique_id)
+char	*generate_heredoc_filename(int x, int unique_id)
 {
-    char *filename;
-    char *id_str;
-    char *strx;
-    size_t offset;
+	char	*filename;
+	char	*id_str;
+	char	*strx;
+	size_t	offset;
 
-    strx = ft_itoa(x);
-    id_str = ft_itoa(unique_id);
-    if (!strx || !id_str)
-    {
-        free(strx);
-        free(id_str);
-        return (NULL);
-    }
-    filename = malloc(64);
-    if (!filename)
-    {
-        free(strx);
-        free(id_str);
-        return (NULL);
-    }
-    ft_strlcpy(filename, "heredoc_", 64); // Prefix for better context
-    offset = ft_strlen("heredoc_");
-    ft_strlcpy(filename + offset, strx, 64 - offset);
-    offset += ft_strlen(strx);
-    ft_strlcpy(filename + offset, id_str, 64 - offset);
-    ft_strlcat(filename, ".txt", 64);
-    free(strx);
-    free(id_str);
-    return (filename);
+	strx = ft_itoa(x);
+	id_str = ft_itoa(unique_id);
+	if (!strx || !id_str)
+		return (free_vars(&strx, &id_str), NULL);
+	filename = malloc(64);
+	if (!filename)
+		return (free_vars(&strx, &id_str), NULL);
+	ft_strlcpy(filename, "heredoc_", 64);
+	offset = ft_strlen("heredoc_");
+	ft_strlcpy(filename + offset, strx, 64 - offset);
+	offset += ft_strlen(strx);
+	ft_strlcpy(filename + offset, id_str, 64 - offset);
+	ft_strlcat(filename, ".txt", 64);
+	free_vars(&strx, &id_str);
+	return (filename);
 }
 
-int create_heredoc_file(char **filename)
+void	free_vars(char **strx, char **id_str)
 {
-    static int x = -1;
-    int fd;
-    int unique_id;
-
-    x--;
-    unique_id = rand(); // Use a random number to ensure uniqueness
-    *filename = generate_heredoc_filename(x, unique_id);
-    if (!*filename)
-        return (-1);
-    fd = open(*filename, O_CREAT | O_WRONLY | O_TRUNC, 0644);
-    if (fd == -1)
-    {
-        free(*filename);
-        return (-1);
-    }
-    return (fd);
+	free(*strx);
+	free(*id_str);
+	return ;
 }
 
-
-char *strip_quotes(char *str)
+int	create_heredoc_file(char **filename)
 {
-    char    *cleaned;
-    int     i;
-    int     j;
+	static int	x = -1;
+	int			fd;
+	int			unique_id;
 
-    if (!str)
-        return (NULL);
-
-    cleaned = malloc(ft_strlen(str) + 1);
-    if (!cleaned)
-        return (NULL);
-
-    i = 0;
-    j = 0;
-    while (str[i])
-    {
-        if (str[i] != '\'' && str[i] != '"')
-            cleaned[j++] = str[i];
-        i++;
-    }
-    cleaned[j] = '\0';
-    return (cleaned);
+	x--;
+	unique_id = rand();
+	*filename = generate_heredoc_filename(x, unique_id);
+	if (!*filename)
+		return (-1);
+	fd = open(*filename, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+	if (fd == -1)
+	{
+		free(*filename);
+		return (-1);
+	}
+	return (fd);
 }
 
+char	*strip_quotes(char *str)
+{
+	char	*cleaned;
+	int		i;
+	int		j;
+
+	if (!str)
+		return (NULL);
+	cleaned = malloc(ft_strlen(str) + 1);
+	if (!cleaned)
+		return (NULL);
+	i = 0;
+	j = 0;
+	while (str[i])
+	{
+		if (str[i] != '\'' && str[i] != '"')
+			cleaned[j++] = str[i];
+		i++;
+	}
+	cleaned[j] = '\0';
+	return (cleaned);
+}
 
 void	ft_sigint_handler_incmd(int sig)
 {
