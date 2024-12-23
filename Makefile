@@ -3,17 +3,18 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mmuhaise <mmuhaise@student.42beirut.com    +#+  +:+       +#+         #
+#    By: mkaterji <mkaterji@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/26 16:41:56 by mmuhaise          #+#    #+#              #
-#    Updated: 2024/12/22 18:30:38 by mmuhaise         ###   ########.fr        #
+#    Updated: 2024/12/23 18:21:24 by mkaterji         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 
 SRCS = main main_extended utils/utils utils/heredoc utils/path utils/utils_extended quotations/quotations \
-		quotations/expansion quotations/quotations_utils utils/utils_extra utils/heredoc_extended utils/more_utils utils/heredoc_utils
+		quotations/expansion quotations/quotations_utils utils/utils_extra utils/heredoc_extended utils/more_utils \
+		utils/heredoc_utils utils/more_heredoc_utils utils/heredoc_variable_ext
 
 EXEC_SRCS = exec/execution exec/pipe_execution exec/sc_execution exec/exec_utils
 
@@ -21,7 +22,7 @@ BUILT_SRCS = builtins/builtins builtins/env builtins/export builtins/export_exte
 
 PARSER_SRCS = parsing/parsing parsing/parsing_extended parsing/parsing_utils parsing/ast
 
-TOKEN_SRCS = tokenize/tokenization tokenize/tokenization_extended tokenize/tokenization_utils
+TOKEN_SRCS = tokenize/tokenization tokenize/tokenization_extended tokenize/tokenization_utils tokenize/more_tokenization_utils
 
 SRC = $(addsuffix .c, $(addprefix src/, $(SRCS)))
 EXEC_SRC = $(addsuffix .c, $(addprefix src/, $(EXEC_SRCS)))

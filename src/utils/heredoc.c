@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmuhaise <mmuhaise@student.42beirut.com    +#+  +:+       +#+        */
+/*   By: mkaterji <mkaterji@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 12:13:10 by mmuhaise          #+#    #+#             */
-/*   Updated: 2024/12/23 15:25:46 by mmuhaise         ###   ########.fr       */
+/*   Updated: 2024/12/23 18:11:53 by mkaterji         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,16 +96,6 @@ char	*strip_quotes(char *str)
 	}
 	cleaned[j] = '\0';
 	return (cleaned);
-}
-
-void	ft_sigint_handler_incmd(int sig)
-{
-	g_signal_exit_status = sig;
-	rl_replace_line("", 1);
-	ft_putchar_fd('\n', 1);
-	rl_on_new_line();
-	rl_redisplay();
-	rl_done = 1;
 }
 
 /////////////////////////////////////////////

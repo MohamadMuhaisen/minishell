@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenization_extended.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmuhaise <mmuhaise@student.42beirut.com    +#+  +:+       +#+        */
+/*   By: mkaterji <mkaterji@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 17:24:29 by mmuhaise          #+#    #+#             */
-/*   Updated: 2024/12/22 16:59:38 by mmuhaise         ###   ########.fr       */
+/*   Updated: 2024/12/23 18:08:34 by mkaterji         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,7 @@ int	handle_special_tokens(char *input, int i,
 		t_elem **tokens_ll, t_my_env *my_env)
 {
 	if (input[i] && input[i] == '>' && input[i + 1] && input[i + 1] == '>')
-	{
-		lstadd_back(tokens_ll, create_elem(ft_strdup(">>")));
-		return (i + 2);
-	}
+		return (lstadd_back(tokens_ll, create_elem(ft_strdup(">>"))), i + 2);
 	else if (input[i] == '|')
 	{
 		if (input[i + 1] == '|')
@@ -48,10 +45,7 @@ int	handle_special_tokens(char *input, int i,
 	}
 	else if (input[i] && input[i] == '<'
 		&& (!input[i + 1] || input[i + 1] != '<'))
-	{
-		lstadd_back(tokens_ll, create_elem(ft_strdup("<")));
-		return (i + 1);
-	}
+		return (lstadd_back(tokens_ll, create_elem(ft_strdup("<"))), i + 1);
 	return (i);
 }
 

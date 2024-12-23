@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmuhaise <mmuhaise@student.42beirut.com    +#+  +:+       +#+        */
+/*   By: mkaterji <mkaterji@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/22 17:55:06 by mmuhaise          #+#    #+#             */
-/*   Updated: 2024/12/23 17:22:50 by mmuhaise         ###   ########.fr       */
+/*   Updated: 2024/12/23 18:27:55 by mkaterji         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,32 +67,25 @@ char	*expand_variable(char *input, int *i, t_my_env *myenv)
 	int		var_len;
 	char	*var_name;
 	char	*var_value;
-	int		env_idx;
 
 	start = *i + 1;
-	var_len = 0;
-	var_value = NULL;
-	while (input[start + var_len]
-		&& (isalnum((unsigned char)input[start + var_len])
-			|| input[start + var_len] == '_'))
-		var_len++;
-	var_name = strndup(input + start, var_len);
+	var_name = extract_var_name(input, start, &var_len);
 	if (!var_name)
-		return (strdup(""));
+		return (ft_strdup(""));
 	*i = start + var_len;
-	env_idx = 0;
-	while (myenv->env[env_idx])
-	{
-		if (!strncmp(myenv->env[env_idx], var_name, var_len)
-			&& myenv->env[env_idx][var_len] == '=')
-		{
-			var_value = strdup(myenv->env[env_idx] + var_len + 1);
-			break ;
-		}
-		env_idx++;
-	}
+	var_value = find_var_value_in_env(var_name, var_len, myenv);
 	free(var_name);
-	if (!var_value)
-		return (strdup(""));
-	return (var_value);
+	if (var_value)
+		return (var_value);
+	return (ft_strdup(""));
+}
+
+void	ft_sigint_handler_incmd(int sig)
+{
+	g_signal_exit_status = sig;
+	rl_replace_line("", 1);
+	ft_putchar_fd('\n', 1);
+	rl_on_new_line();
+	rl_redisplay();
+	rl_done = 1;
 }

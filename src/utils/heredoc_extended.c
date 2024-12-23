@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_extended.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmuhaise <mmuhaise@student.42beirut.com    +#+  +:+       +#+        */
+/*   By: mkaterji <mkaterji@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 07:52:01 by mmuhaise          #+#    #+#             */
-/*   Updated: 2024/12/23 15:37:25 by mmuhaise         ###   ########.fr       */
+/*   Updated: 2024/12/23 18:18:07 by mkaterji         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,33 +49,21 @@ void	heredoc_input_loop(int fd, char *cleaned_limiter,
 
 char	*expand_line_heredoc(char *line, t_my_env *myenv)
 {
-	int		in_single_quotes;
+	int		in_s_q;
 	char	*result;
 	int		i;
-	char	*var_value;
 
-	in_single_quotes = 0;
+	in_s_q = 0;
 	result = ft_calloc(1, 1);
 	i = 0;
 	while (line[i])
 	{
 		if (line[i] == '\'')
-		{
-			in_single_quotes = !in_single_quotes;
-			result = ft_strjoin_char(result, line[i]);
-			i++;
-		}
-		else if (line[i] == '$' && !in_single_quotes)
-		{
-			var_value = expand_variable(line, &i, myenv);
-			result = ft_strjoin_free(result, var_value);
-			free(var_value);
-		}
+			in_s_q = toggle_single_quotes_and_append(&result, line, i++);
+		else if (line[i] == '$' && !in_s_q)
+			handle_variable_expansion(&result, line, &i, myenv);
 		else
-		{
-			result = ft_strjoin_char(result, line[i]);
-			i++;
-		}
+			append_non_special_char(&result, line, &i);
 	}
 	return (result);
 }

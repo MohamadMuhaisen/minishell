@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmuhaise <mmuhaise@student.42beirut.com    +#+  +:+       +#+        */
+/*   By: mkaterji <mkaterji@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/26 17:02:22 by mmuhaise          #+#    #+#             */
-/*   Updated: 2024/12/23 15:32:18 by mmuhaise         ###   ########.fr       */
+/*   Updated: 2024/12/23 18:23:58 by mkaterji         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,6 +168,16 @@ int			find_closing_quote(char *str, char quote, int *i);
 char		*expand_var_loop(t_my_env *myenv, char *var_name,
 				int var_len, char **var_value);
 void		free_vars(char **strx, char **id_str);
+int			is_special_char(char c);
+int			handle_double_operator(char *input, int i);
+char		update_quote_state(char quote, char current_char);
+int			toggle_single_quotes_and_append(char **result, char *line, int i);
+void		handle_variable_expansion(char **result, char *line, int *i,
+				t_my_env *myenv);
+void		append_non_special_char(char **result, char *line, int *i);
+char		*extract_var_name(char *input, int start, int *var_len);
+char		*find_var_value_in_env(char *var_name,
+				int var_len, t_my_env *myenv);
 
 #endif
 //TEST Mhamad ali

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenization.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmuhaise <mmuhaise@student.42beirut.com    +#+  +:+       +#+        */
+/*   By: mkaterji <mkaterji@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/05 16:21:48 by mmuhaise          #+#    #+#             */
-/*   Updated: 2024/12/22 17:02:06 by mmuhaise         ###   ########.fr       */
+/*   Updated: 2024/12/23 18:05:21 by mkaterji         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,24 +39,9 @@ int	token_len(char *input)
 	quote = '\0';
 	while (input[i])
 	{
-		if (!quote)
-		{
-			if (input[i] == '|' || input[i] == '<'
-				|| input[i] == '>' || input[i] == ' ')
-			{
-				if ((input[i] == '<' && input[i + 1] == '<')
-					|| (input[i] == '>' && input[i + 1] == '>'))
-					return (i + 2);
-				return (i);
-			}
-		}
-		if (input[i] == '\'' || input[i] == '"')
-		{
-			if (!quote)
-				quote = input[i];
-			else if (quote == input[i])
-				quote = '\0';
-		}
+		if (!quote && is_special_char(input[i]))
+			return (handle_double_operator(input, i));
+		quote = update_quote_state(quote, input[i]);
 		i++;
 	}
 	return (i);
