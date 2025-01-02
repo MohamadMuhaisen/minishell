@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mkaterji <mkaterji@student.42.fr>          +#+  +:+       +#+         #
+#    By: mmuhaise <mmuhaise@student.42beirut.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/26 16:41:56 by mmuhaise          #+#    #+#              #
-#    Updated: 2024/12/23 18:21:24 by mkaterji         ###   ########.fr        #
+#    Updated: 2025/01/02 06:02:33 by mmuhaise         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 

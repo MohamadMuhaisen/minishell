@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   more_tokenization_utils.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkaterji <mkaterji@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mmuhaise <mmuhaise@student.42beirut.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/23 17:57:11 by mkaterji          #+#    #+#             */
-/*   Updated: 2024/12/23 18:00:04 by mkaterji         ###   ########.fr       */
+/*   Updated: 2025/01/02 06:02:13 by mmuhaise         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

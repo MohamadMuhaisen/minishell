@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   more_heredoc_utils.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkaterji <mkaterji@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mmuhaise <mmuhaise@student.42beirut.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/23 18:13:20 by mkaterji          #+#    #+#             */
-/*   Updated: 2024/12/23 18:19:30 by mkaterji         ###   ########.fr       */
+/*   Updated: 2025/01/02 06:02:22 by mmuhaise         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

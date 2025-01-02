@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenization_extended.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkaterji <mkaterji@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mmuhaise <mmuhaise@student.42beirut.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 17:24:29 by mmuhaise          #+#    #+#             */
-/*   Updated: 2024/12/23 18:08:34 by mkaterji         ###   ########.fr       */
+/*   Updated: 2025/01/02 06:02:14 by mmuhaise         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

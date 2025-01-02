@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_extended.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkaterji <mkaterji@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mmuhaise <mmuhaise@student.42beirut.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 18:59:11 by mmuhaise          #+#    #+#             */
-/*   Updated: 2024/12/22 17:24:29 by mkaterji         ###   ########.fr       */
+/*   Updated: 2025/01/02 06:01:48 by mmuhaise         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

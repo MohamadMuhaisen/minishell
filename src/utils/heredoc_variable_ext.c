@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_variable_ext.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkaterji <mkaterji@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mmuhaise <mmuhaise@student.42beirut.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/23 18:20:42 by mkaterji          #+#    #+#             */
-/*   Updated: 2024/12/23 18:23:17 by mkaterji         ###   ########.fr       */
+/*   Updated: 2025/01/02 06:02:20 by mmuhaise         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
