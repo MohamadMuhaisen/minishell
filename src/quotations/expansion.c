@@ -6,7 +6,7 @@
 /*   By: mmuhaise <mmuhaise@student.42beirut.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 14:56:33 by mmuhaise          #+#    #+#             */
-/*   Updated: 2024/09/09 08:15:59 by mmuhaise         ###   ########.fr       */
+/*   Updated: 2025/01/01 19:35:38 by mmuhaise         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,8 +75,7 @@ int	prepare_var_search(t_ll_node **lst, char *str, int *j)
 	return (0);
 }
 
-void	search_and_add_var(t_ll_node **lst, char *str,
-			int *j, t_my_env *myenv)
+void	search_and_add_var(t_ll_node **lst, char *str, int *j, t_my_env *myenv)
 {
 	int		i;
 	char	*to_find;
@@ -92,7 +91,8 @@ void	search_and_add_var(t_ll_node **lst, char *str,
 	{
 		while (str[*j + i] && str[*j + i] != '$'
 			&& str[*j + i] != '\'' && str[*j + i] != '"'
-			&& str[*j + i] != ' ' && str[*j + i] != ']')
+			&& str[*j + i] != ' ' && str[*j + i] != ']'
+			&& (i == 0 || !ft_isdigit(str[*j + i])))
 			i++;
 	}
 	to_find = ft_substr(str, *j, i);

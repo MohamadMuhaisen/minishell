@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkaterji <mkaterji@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mmuhaise <mmuhaise@student.42beirut.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 21:45:54 by mmuhaise          #+#    #+#             */
-/*   Updated: 2024/12/23 20:13:51 by mkaterji         ###   ########.fr       */
+/*   Updated: 2025/01/02 02:01:42 by mmuhaise         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,8 +81,11 @@ int	execute_exit(t_ast_node *node, t_my_env *my_env)
 	if (node->arr[1])
 	{
 		exit_code = ft_atoll(node->arr[1], &valid);
-		if (!valid)
-			return (1);
+		if (!valid || exit_code > LLONG_MAX || exit_code < LLONG_MIN)
+		{
+			ft_printf("exit: %s: numeric argument required\n", node->arr[1]);
+			exit(2);
+		}
 	}
 	else
 		exit_code = my_env->exit_status;

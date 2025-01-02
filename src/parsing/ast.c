@@ -6,7 +6,7 @@
 /*   By: mmuhaise <mmuhaise@student.42beirut.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 15:42:12 by mmuhaise          #+#    #+#             */
-/*   Updated: 2024/09/06 10:05:26 by mmuhaise         ###   ########.fr       */
+/*   Updated: 2025/01/02 04:05:43 by mmuhaise         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,33 @@ t_ast_node	*initialize_ast_root(t_elem *tokens_ll,
 		my_env->exit_status = 2;
 		return (NULL);
 	}
+	if (check_syntax_errors(tokens_ll, my_env) == 0)
+		return (NULL);
 	root = parse_simple_command(&tokens_ll, my_env);
 	if (!root)
 		return (NULL);
 	return (root);
+}
+
+int	check_syntax_errors(t_elem *tokens_ll, t_my_env *my_env)
+{
+	t_elem	*current;
+
+	current = tokens_ll;
+	while (current && current->next)
+	{
+		if ((ft_strncmp(current->token, ">", 1) == 0
+				|| ft_strncmp(current->token, "<", 1) == 0)
+			&& (ft_strncmp(current->next->token, ">", 1) == 0
+				|| ft_strncmp(current->next->token, "<", 1) == 0))
+		{
+			ft_putendl_fd("Minishell: syntax error", 2);
+			my_env->exit_status = 2;
+			return (0);
+		}
+		current = current->next;
+	}
+	return (1);
 }
 
 t_elem	*process_pipe_syntax(t_elem *tokens_ll,

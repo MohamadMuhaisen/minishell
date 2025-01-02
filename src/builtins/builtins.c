@@ -6,7 +6,7 @@
 /*   By: mmuhaise <mmuhaise@student.42beirut.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/26 18:34:27 by mmuhaise          #+#    #+#             */
-/*   Updated: 2024/12/21 13:22:26 by mmuhaise         ###   ########.fr       */
+/*   Updated: 2025/01/02 01:44:18 by mmuhaise         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,13 +138,13 @@ int	handle_cd_execution(char *arg, t_my_env *my_env)
 			my_env->exit_status = 1;
 			return (ft_putstr_fd("cd: OLDPWD not set\n", 2), 1);
 		}
-		ft_printf("%s\n", arg);
+		// ft_printf("%s\n", arg);
 	}
 	if (change_directory(arg, my_env) == 0)
 		handle_cd_update_pwd(getcwd(buf, sizeof(buf)), old, my_env);
 	else
 	{
-		perror("cd");
+		// perror("cd");
 		my_env->exit_status = 1;
 	}
 	return (1);

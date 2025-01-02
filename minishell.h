@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkaterji <mkaterji@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mmuhaise <mmuhaise@student.42beirut.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/26 17:02:22 by mmuhaise          #+#    #+#             */
-/*   Updated: 2024/12/23 18:23:58 by mkaterji         ###   ########.fr       */
+/*   Updated: 2025/01/02 03:50:11 by mmuhaise         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,6 +178,7 @@ void		append_non_special_char(char **result, char *line, int *i);
 char		*extract_var_name(char *input, int start, int *var_len);
 char		*find_var_value_in_env(char *var_name,
 				int var_len, t_my_env *myenv);
+int			check_syntax_errors(t_elem *tokens_ll, t_my_env *my_env);
 
 #endif
 //TEST Mhamad ali
